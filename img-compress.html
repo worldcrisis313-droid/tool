@@ -14,6 +14,7 @@
             --light: #f8f9fa;
             --dark: #212529;
             --success: #4cc9f0;
+            --error: #e74c3c;
             --gray: #6c757d;
             --border-radius: 8px;
             --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -79,10 +80,12 @@
             text-decoration: none;
             font-weight: 500;
             transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
         }
 
         nav ul li a:hover {
-            text-decoration: underline;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         .main-content {
@@ -180,6 +183,14 @@
             background-color: #5a6268;
         }
 
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #3aa8d0;
+        }
+
         .compression-controls {
             margin: 2rem 0;
         }
@@ -273,6 +284,7 @@
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
 
         .ad-space {
@@ -425,6 +437,10 @@
             z-index: 1000;
         }
 
+        .toast.error {
+            background: var(--error);
+        }
+
         .toast.show {
             transform: translateY(0);
             opacity: 1;
@@ -468,9 +484,105 @@
                 position: relative;
             }
         }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
     </style>
-    <!-- Google AdSense Script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -483,11 +595,11 @@
                 <div class="menu-toggle">☰</div>
                 <nav>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">How It Works</a></li>
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="#" class="nav-link" data-section="home">Home</a></li>
+                        <li><a href="#" class="nav-link" data-section="tools">Tools</a></li>
+                        <li><a href="#" class="nav-link" data-section="features">Features</a></li>
+                        <li><a href="#" class="nav-link" data-section="faq">FAQ</a></li>
+                        <li><a href="#" id="loginBtn">Login</a></li>
                     </ul>
                 </nav>
             </div>
@@ -496,7 +608,7 @@
 
     <div class="container">
         <div class="main-content">
-            <div class="compression-tool">
+            <div class="compression-tool" id="home-section">
                 <h1 class="tool-title"><i>📱</i> Image Compression Tool</h1>
                 <p>Optimize your images for web with our easy-to-use compression tool. Adjust the compression level to balance quality and file size.</p>
                 
@@ -536,7 +648,7 @@
 
                     <div class="action-buttons">
                         <button class="btn" id="compressBtn"><i>⚡</i> Compress Image</button>
-                        <button class="btn btn-secondary" id="downloadBtn" disabled><i>📥</i> Download</button>
+                        <button class="btn btn-success" id="downloadBtn" disabled><i>📥</i> Download</button>
                         <button class="btn btn-secondary" id="resetBtn"><i>🔄</i> Reset</button>
                     </div>
                 </div>
@@ -546,38 +658,46 @@
                 <div class="ad-space">
                     <div class="ad-label">Advertisement</div>
                     <div class="ad-unit">
-                        <!-- AdSense Ad Unit -->
-                        <ins class="adsbygoogle"
-                             style="display:block"
-                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-                             data-ad-slot="XXXXXXXXXX"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                        <script>
-                             (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
+                        Ad Space
                     </div>
                 </div>
 
                 <div class="ad-space">
                     <div class="ad-label">Advertisement</div>
                     <div class="ad-unit">
-                        <!-- AdSense Ad Unit -->
-                        <ins class="adsbygoogle"
-                             style="display:block"
-                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-                             data-ad-slot="XXXXXXXXXX"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                        <script>
-                             (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
+                        Ad Space
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="features">
+        <div id="tools-section" class="hidden">
+            <h2 class="section-title">Our Tools</h2>
+            <div class="tools-grid">
+                <div class="tool-card" data-tool="compress">
+                    <div class="tool-icon">🖼️</div>
+                    <h3 class="tool-title">Image Compressor</h3>
+                    <p>Reduce image file size without losing quality</p>
+                </div>
+                <div class="tool-card" data-tool="resize">
+                    <div class="tool-icon">📏</div>
+                    <h3 class="tool-title">Image Resizer</h3>
+                    <p>Resize images to specific dimensions</p>
+                </div>
+                <div class="tool-card" data-tool="convert">
+                    <div class="tool-icon">🔄</div>
+                    <h3 class="tool-title">Format Converter</h3>
+                    <p>Convert images between different formats</p>
+                </div>
+                <div class="tool-card" data-tool="optimize">
+                    <div class="tool-icon">⚡</div>
+                    <h3 class="tool-title">Image Optimizer</h3>
+                    <p>Optimize images for web performance</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="features" id="features-section">
             <div class="feature-card">
                 <div class="feature-icon">⚡</div>
                 <h3 class="feature-title">Fast Compression</h3>
@@ -599,6 +719,22 @@
                 <p>Works perfectly on desktop, tablet, and mobile devices.</p>
             </div>
         </div>
+
+        <div id="faq-section" class="hidden">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="feature-card">
+                <h3>How does image compression work?</h3>
+                <p>Image compression reduces the file size of an image by removing unnecessary data while maintaining visual quality as much as possible.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Is my data secure?</h3>
+                <p>Yes, all image processing happens locally in your browser. Your images are never uploaded to any server.</p>
+            </div>
+            <div class="feature-card">
+                <h3>What image formats are supported?</h3>
+                <p>We support JPEG, PNG, GIF, and WebP formats for compression.</p>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -611,10 +747,10 @@
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">How It Works</a></li>
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#" class="nav-link" data-section="home">Home</a></li>
+                        <li><a href="#" class="nav-link" data-section="tools">Tools</a></li>
+                        <li><a href="#" class="nav-link" data-section="features">Features</a></li>
+                        <li><a href="#" class="nav-link" data-section="faq">FAQ</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -631,6 +767,27 @@
             </div>
         </div>
     </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Login</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Login</button>
+            </form>
+        </div>
+    </div>
 
     <div class="toast" id="toast"></div>
 
@@ -652,6 +809,18 @@
         const toast = document.getElementById('toast');
         const menuToggle = document.querySelector('.menu-toggle');
         const navMenu = document.querySelector('nav ul');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeModal = document.querySelector('.close-modal');
+        const loginForm = document.getElementById('loginForm');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const toolCards = document.querySelectorAll('.tool-card');
+        
+        // Section elements
+        const homeSection = document.getElementById('home-section');
+        const toolsSection = document.getElementById('tools-section');
+        const featuresSection = document.getElementById('features-section');
+        const faqSection = document.getElementById('faq-section');
 
         // Variables
         let originalImage = null;
@@ -660,31 +829,45 @@
         // Event Listeners
         browseBtn.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', handleFileSelect);
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.style.borderColor = 'var(--primary)';
-            uploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
-        });
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.style.borderColor = '#ccc';
-            uploadArea.style.backgroundColor = 'transparent';
-        });
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.style.borderColor = '#ccc';
-            uploadArea.style.backgroundColor = 'transparent';
-            
-            if (e.dataTransfer.files.length) {
-                fileInput.files = e.dataTransfer.files;
-                handleFileSelect();
-            }
-        });
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        uploadArea.addEventListener('drop', handleDrop);
         compressionSlider.addEventListener('input', updateCompressionValue);
         compressBtn.addEventListener('click', compressImage);
         downloadBtn.addEventListener('click', downloadImage);
         resetBtn.addEventListener('click', resetTool);
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('show');
+        menuToggle.addEventListener('click', toggleMobileMenu);
+        loginBtn.addEventListener('click', openLoginModal);
+        closeModal.addEventListener('click', closeLoginModal);
+        loginForm.addEventListener('submit', handleLogin);
+        
+        // Navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.getAttribute('data-section');
+                showSection(section);
+                
+                // Close mobile menu if open
+                if (navMenu.classList.contains('show')) {
+                    navMenu.classList.remove('show');
+                }
+            });
+        });
+        
+        // Tool cards
+        toolCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const tool = card.getAttribute('data-tool');
+                showTool(tool);
+            });
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                closeLoginModal();
+            }
         });
 
         // Functions
@@ -725,6 +908,28 @@
             }
         }
 
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+        }
+
+        function handleDragLeave() {
+            uploadArea.style.borderColor = '#ccc';
+            uploadArea.style.backgroundColor = 'transparent';
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#ccc';
+            uploadArea.style.backgroundColor = 'transparent';
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileSelect();
+            }
+        }
+
         function updateCompressionValue() {
             compressionValue.textContent = `${compressionSlider.value}%`;
         }
@@ -762,7 +967,8 @@
                     
                     // Display compressed file info
                     const fileSize = (blob.size / 1024).toFixed(2);
-                    const reduction = ((1 - blob.size / fileInput.files[0].size) * 100).toFixed(1);
+                    const originalSize = fileInput.files[0].size;
+                    const reduction = ((1 - blob.size / originalSize) * 100).toFixed(1);
                     compressedInfo.textContent = `Compressed | ${originalImage.width}×${originalImage.height} | ${fileSize} KB (${reduction}% reduction)`;
                     
                     // Enable download button
@@ -781,7 +987,8 @@
             if (!compressedImageBlob) return;
             
             const link = document.createElement('a');
-            link.download = `compressed_${fileInput.files[0].name.split('.')[0]}.jpg`;
+            const originalName = fileInput.files[0].name.split('.')[0];
+            link.download = `compressed_${originalName}.jpg`;
             link.href = URL.createObjectURL(compressedImageBlob);
             link.click();
             
@@ -802,9 +1009,69 @@
             updateCompressionValue();
         }
 
+        function toggleMobileMenu() {
+            navMenu.classList.toggle('show');
+        }
+
+        function openLoginModal() {
+            loginModal.style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            loginModal.style.display = 'none';
+            loginForm.reset();
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (username && password) {
+                showToast('Login successful!');
+                closeLoginModal();
+            } else {
+                showToast('Please enter both username and password', 'error');
+            }
+        }
+        
+        function showSection(section) {
+            // Hide all sections
+            homeSection.classList.add('hidden');
+            toolsSection.classList.add('hidden');
+            featuresSection.classList.add('hidden');
+            faqSection.classList.add('hidden');
+            
+            // Show selected section
+            if (section === 'home') {
+                homeSection.classList.remove('hidden');
+            } else if (section === 'tools') {
+                toolsSection.classList.remove('hidden');
+            } else if (section === 'features') {
+                featuresSection.classList.remove('hidden');
+            } else if (section === 'faq') {
+                faqSection.classList.remove('hidden');
+            }
+        }
+        
+        function showTool(tool) {
+            // For now, just show a message
+            // In a real application, you would implement each tool's functionality
+            showToast(`${tool.charAt(0).toUpperCase() + tool.slice(1)} tool clicked! This feature is under development.`);
+            
+            // If it's the compress tool, show the home section
+            if (tool === 'compress') {
+                showSection('home');
+            }
+        }
+
         function showToast(message, type = 'success') {
             toast.textContent = message;
-            toast.style.background = type === 'error' ? '#e74c3c' : 'var(--success)';
+            toast.className = 'toast';
+            if (type === 'error') {
+                toast.classList.add('error');
+            }
             toast.classList.add('show');
             
             setTimeout(() => {
@@ -814,6 +1081,7 @@
 
         // Initialize
         updateCompressionValue();
+        showSection('home');
     </script>
 </body>
 </html>
