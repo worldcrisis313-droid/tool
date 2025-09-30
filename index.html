@@ -3,869 +3,467 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolKit Pro - Your All-in-One Tool Solution</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Nirazat Alia - Budget Management</title>
     <style>
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #7209b7;
-            --accent: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --border-radius: 10px;
-            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background-color: #f5f7fb;
-            color: var(--dark);
-            line-height: 1.6;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
         }
-
+        
         .container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
         }
-
-        /* Header Styles */
+        
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem 0;
-            box-shadow: var(--box-shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-icon {
-            margin-right: 10px;
-            font-size: 2rem;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 1.5rem;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        nav ul li a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: white;
-            transition: var(--transition);
-        }
-
-        nav ul li a:hover:after {
-            width: 100%;
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-
-        .btn-outline:hover {
-            background: white;
-            color: var(--primary);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #e11574;
-            transform: translateY(-2px);
-        }
-
-        .menu-toggle {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 5rem 0;
-            background: linear-gradient(rgba(67, 97, 238, 0.9), rgba(114, 9, 183, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%234361ee"/><path d="M0 0L100 100M100 0L0 100" stroke="%233a56d4" stroke-width="2"/></svg>');
-            background-size: cover;
-            color: white;
             text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            line-height: 1.2;
+        
+        h1 {
+            color: #1a2a6c;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
         }
-
-        .hero p {
+        
+        .subtitle {
+            color: #b21f1f;
             font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
+            font-weight: 500;
         }
-
-        .search-bar {
-            max-width: 600px;
-            margin: 2rem auto;
-            display: flex;
-        }
-
-        .search-bar input {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            border-radius: var(--border-radius) 0 0 var(--border-radius);
-            font-size: 1rem;
-        }
-
-        .search-bar button {
-            padding: 0 1.5rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .search-bar button:hover {
-            background: #e11574;
-        }
-
-        /* Tools Section */
-        .section-title {
-            text-align: center;
-            margin: 3rem 0 2rem;
-            font-size: 2.2rem;
-            color: var(--dark);
-            position: relative;
-        }
-
-        .section-title:after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: var(--primary);
-            margin: 0.5rem auto;
-            border-radius: 2px;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .tool-card {
-            background: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--box-shadow);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .tool-icon {
-            height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: white;
-        }
-
-        .image-tool .tool-icon {
-            background: linear-gradient(135deg, #4361ee, #3a56d4);
-        }
-
-        .pdf-tool .tool-icon {
-            background: linear-gradient(135deg, #f72585, #e11574);
-        }
-
-        .tool-content {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tool-content h3 {
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-
-        .tool-content p {
-            color: var(--gray);
-            margin-bottom: 1rem;
-            flex-grow: 1;
-        }
-
-        .tool-link {
-            display: inline-flex;
-            align-items: center;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: auto;
-        }
-
-        .tool-link i {
-            margin-left: 5px;
-            transition: var(--transition);
-        }
-
-        .tool-link:hover i {
-            transform: translateX(5px);
-        }
-
-        /* Categories Section */
-        .categories {
-            background: var(--light);
-            padding: 3rem 0;
-            margin: 3rem 0;
-        }
-
-        .category-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .category-tab {
-            padding: 0.8rem 1.5rem;
-            background: white;
-            border: none;
-            border-radius: 30px;
-            margin: 0.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .category-tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .category-tab:hover:not(.active) {
-            background: var(--light-gray);
-        }
-
-        /* Features Section */
-        .features {
+        
+        .dashboard {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
+            gap: 20px;
+            margin-bottom: 30px;
         }
-
-        .feature-card {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            text-align: center;
-            transition: var(--transition);
+        
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
-
-        .feature-card:hover {
+        
+        .card:hover {
             transform: translateY(-5px);
         }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
+        
+        .card h2 {
+            color: #1a2a6c;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #fdbb2d;
         }
-
-        .feature-title {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
-
-        /* Testimonials */
-        .testimonials {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 4rem 0;
-            margin: 3rem 0;
-        }
-
-        .testimonial-slider {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .testimonial {
-            text-align: center;
-            padding: 0 2rem;
-        }
-
-        .testimonial-text {
-            font-size: 1.2rem;
-            font-style: italic;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .testimonial-author {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .testimonial-role {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-        }
-
-        .slider-dots {
+        
+        .budget-item {
             display: flex;
-            justify-content: center;
-            margin-top: 2rem;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
         }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            margin: 0 5px;
-            cursor: pointer;
-            transition: var(--transition);
+        
+        .budget-item:last-child {
+            border-bottom: none;
         }
-
-        .dot.active {
-            background: white;
-            transform: scale(1.2);
+        
+        .budget-value {
+            font-weight: bold;
         }
-
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 3rem 0 1rem;
+        
+        .budget-positive {
+            color: #2e7d32;
         }
-
-        .footer-content {
+        
+        .budget-negative {
+            color: #c62828;
+        }
+        
+        .summary {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary h2 {
+            color: #1a2a6c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            gap: 20px;
         }
-
-        .footer-section h3 {
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
+        
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .summary-item h3 {
+            color: #1a2a6c;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .summary-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #b21f1f;
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-container h2 {
+            color: #1a2a6c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        
+        .chart {
+            height: 250px;
             position: relative;
-            padding-bottom: 0.5rem;
         }
-
-        .footer-section h3:after {
-            content: '';
+        
+        .bar {
             position: absolute;
-            left: 0;
             bottom: 0;
             width: 40px;
-            height: 3px;
-            background: var(--primary);
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
         }
-
-        .footer-section ul {
-            list-style: none;
+        
+        .bar:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
         }
-
-        .footer-section ul li {
-            margin-bottom: 0.8rem;
+        
+        .budget-bar {
+            background: #1a2a6c;
         }
-
-        .footer-section ul li a {
-            color: #ccc;
-            text-decoration: none;
-            transition: var(--transition);
+        
+        .expenditure-bar {
+            background: #b21f1f;
         }
-
-        .footer-section ul li a:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .social-links {
+        
+        .controls {
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: #1a2a6c;
             color: white;
-            text-decoration: none;
-            transition: var(--transition);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-
-        .social-links a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
+        
+        button:hover {
+            background: #b21f1f;
+            transform: translateY(-2px);
         }
-
-        .copyright {
+        
+        footer {
             text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            padding: 20px;
+            color: white;
             font-size: 0.9rem;
-            color: #aaa;
         }
-
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .tools-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-        }
-
+        
         @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            nav ul {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background: var(--primary-dark);
-                padding: 1rem 0;
-                z-index: 100;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            nav ul.show {
-                display: flex;
-            }
-
-            nav ul li {
-                margin: 0;
-                text-align: center;
-                padding: 0.7rem 0;
-            }
-
-            .header-content {
-                position: relative;
-            }
-
-            .auth-buttons {
-                display: none;
-            }
-
-            .hero {
-                padding: 3rem 0;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .search-bar {
-                flex-direction: column;
-            }
-
-            .search-bar input {
-                border-radius: var(--border-radius);
-                margin-bottom: 0.5rem;
-            }
-
-            .search-bar button {
-                border-radius: var(--border-radius);
-                padding: 0.8rem;
-            }
-
-            .tools-grid {
+            .dashboard {
                 grid-template-columns: 1fr;
             }
-
-            .category-tabs {
-                flex-direction: column;
-                align-items: center;
+            
+            .charts {
+                grid-template-columns: 1fr;
             }
-
-            .category-tab {
-                width: 80%;
-                margin: 0.3rem 0;
+            
+            h1 {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <span class="logo-icon"><i class="fas fa-tools"></i></span>
-                    ToolKit Pro
+    <div class="container">
+        <header>
+            <h1>Nirazat Alia</h1>
+            <p class="subtitle">Budget Management System</p>
+        </header>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h2>Internal Budget</h2>
+                <div class="budget-item">
+                    <span>Budget:</span>
+                    <span class="budget-value">1,391,000</span>
                 </div>
-                <div class="menu-toggle">
-                    <i class="fas fa-bars"></i>
+                <div class="budget-item">
+                    <span>Expenditure:</span>
+                    <span class="budget-value">1,010,075</span>
                 </div>
-                <nav>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Image Tools</a></li>
-                        <li><a href="#">PDF Tools</a></li>
-                        <li><a href="#">All Tools</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </nav>
-                <div class="auth-buttons">
-                    <button class="btn btn-outline">Login</button>
-                    <button class="btn btn-primary">Sign Up</button>
+                <div class="budget-item">
+                    <span>Remaining:</span>
+                    <span class="budget-value budget-positive">380,925</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>External Budget</h2>
+                <div class="budget-item">
+                    <span>Budget:</span>
+                    <span class="budget-value">115,000</span>
+                </div>
+                <div class="budget-item">
+                    <span>Expenditure:</span>
+                    <span class="budget-value">186,065</span>
+                </div>
+                <div class="budget-item">
+                    <span>Remaining:</span>
+                    <span class="budget-value budget-negative">-71,065</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Internal Staff Budget</h2>
+                <div class="budget-item">
+                    <span>Budget:</span>
+                    <span class="budget-value">4,406,774</span>
+                </div>
+                <div class="budget-item">
+                    <span>Expenditure:</span>
+                    <span class="budget-value">3,698,334</span>
+                </div>
+                <div class="budget-item">
+                    <span>Remaining:</span>
+                    <span class="budget-value budget-positive">708,440</span>
                 </div>
             </div>
         </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Your All-in-One Solution for Image & PDF Tools</h1>
-            <p>Optimize, convert, edit, and enhance your files with our powerful online tools. Fast, secure, and completely free to use.</p>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for tools...">
-                <button><i class="fas fa-search"></i></button>
-            </div>
-            <div class="auth-buttons">
-                <button class="btn btn-outline">Explore Tools</button>
-                <button class="btn btn-primary">Get Started</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Popular Tools Section -->
-    <section class="container">
-        <h2 class="section-title">Popular Tools</h2>
-        <div class="tools-grid">
-            <!-- Image Tools -->
-            <div class="tool-card image-tool">
-                <div class="tool-icon">
-                    <i class="fas fa-compress-arrows-alt"></i>
+        
+        <div class="summary">
+            <h2>Budget Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h3>Total Budget</h3>
+                    <div class="summary-value" id="total-budget">5,912,774</div>
                 </div>
-                <div class="tool-content">
-                    <h3>Image Compressor</h3>
-                    <p>Reduce image file size without losing quality. Perfect for web optimization.</p>
-                    <a href="#" class="tool-link">Use Tool <i class="fas fa-arrow-right"></i></a>
+                <div class="summary-item">
+                    <h3>Total Expenditure</h3>
+                    <div class="summary-value" id="total-expenditure">4,894,474</div>
                 </div>
-            </div>
-
-            <div class="tool-card image-tool">
-                <div class="tool-icon">
-                    <i class="fas fa-exchange-alt"></i>
+                <div class="summary-item">
+                    <h3>Remaining Budget</h3>
+                    <div class="summary-value budget-positive" id="remaining-budget">1,018,300</div>
                 </div>
-                <div class="tool-content">
-                    <h3>Image Converter</h3>
-                    <p>Convert between JPG, PNG, WEBP, and other popular image formats.</p>
-                    <a href="#image-compress.html" class="tool-link">Use Tool <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-
-            <div class="tool-card image-tool">
-                <div class="tool-icon">
-                    <i class="fas fa-crop-alt"></i>
-                </div>
-                <div class="tool-content">
-                    <h3>Image Resizer</h3>
-                    <p>Resize your images to exact dimensions while maintaining aspect ratio.</p>
-                    <a href="#" class="tool-link">Use Tool <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-
-            <!-- PDF Tools -->
-            <div class="tool-card pdf-tool">
-                <div class="tool-icon">
-                    <i class="fas fa-file-pdf"></i>
-                </div>
-                <div class="tool-content">
-                    <h3>PDF Compressor</h3>
-                    <p>Reduce PDF file size while preserving quality. Perfect for email attachments.</p>
-                    <a href="#" class="tool-link">Use Tool <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-
-            <div class="tool-card pdf-tool">
-                <div class="tool-icon">
-                    <i class="fas fa-file-export"></i>
-                </div>
-                <div class="tool-content">
-                    <h3>PDF to Word</h3>
-                    <p>Convert PDF documents to editable Word files with high accuracy.</p>
-                    <a href="#" class="tool-link">Use Tool <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-
-            <div class="tool-card pdf-tool">
-                <div class="tool-icon">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <div class="tool-content">
-                    <h3>PDF Protector</h3>
-                    <p>Add passwords and permissions to your PDF files for enhanced security.</p>
-                    <a href="#" class="tool-link">Use Tool <i class="fas fa-arrow-right"></i></a>
+                <div class="summary-item">
+                    <h3>Budget Utilization</h3>
+                    <div class="summary-value" id="utilization-rate">82.78%</div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section class="categories">
-        <div class="container">
-            <h2 class="section-title">Browse by Category</h2>
-            <div class="category-tabs">
-                <button class="category-tab active">All Tools</button>
-                <button class="category-tab">Image Tools</button>
-                <button class="category-tab">PDF Tools</button>
-                <button class="category-tab">Conversion Tools</button>
-                <button class="category-tab">Security Tools</button>
-            </div>
-            <div class="tools-grid">
-                <!-- Additional tools can be displayed here based on category selection -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="container">
-        <h2 class="section-title">Why Choose Our Tools?</h2>
-        <div class="features">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-bolt"></i>
+        
+        <div class="chart-container">
+            <h2>Budget vs Expenditure</h2>
+            <div class="charts">
+                <div class="chart" id="budget-chart">
+                    <!-- Budget chart will be generated by JavaScript -->
                 </div>
-                <h3 class="feature-title">Lightning Fast</h3>
-                <p>Our tools process files in seconds, saving you valuable time.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3 class="feature-title">Secure & Private</h3>
-                <p>Your files are processed securely and never stored on our servers.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-mobile-alt"></i>
-                </div>
-                <h3 class="feature-title">Works Everywhere</h3>
-                <p>Access our tools from any device with a modern web browser.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials">
-        <div class="container">
-            <h2 class="section-title" style="color: white;">What Our Users Say</h2>
-            <div class="testimonial-slider">
-                <div class="testimonial">
-                    <p class="testimonial-text">"This website has saved me so much time! The image compression tool is incredibly efficient and the PDF conversion works perfectly every time."</p>
-                    <div class="testimonial-author">Sarah Johnson</div>
-                    <div class="testimonial-role">Graphic Designer</div>
-                </div>
-                <div class="slider-dots">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
+                <div class="chart" id="expenditure-chart">
+                    <!-- Expenditure chart will be generated by JavaScript -->
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>ToolKit Pro</h3>
-                    <p>Your all-in-one solution for image and PDF tools. Fast, secure, and completely free to use.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Image Tools</a></li>
-                        <li><a href="#">PDF Tools</a></li>
-                        <li><a href="#">All Tools</a></li>
-                        <li><a href="#">Pricing</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">Disclaimer</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact Us</h3>
-                    <ul>
-                        <li><i class="fas fa-envelope"></i> support@toolkitpro.com</li>
-                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-map-marker-alt"></i> 123 Tech Street, Digital City</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                &copy; 2023 ToolKit Pro. All rights reserved.
-            </div>
+        
+        <div class="controls">
+            <button id="calculate-btn">Calculate Budget</button>
+            <button id="reset-btn">Reset Data</button>
         </div>
-    </footer>
+        
+        <footer>
+            <p>Nirazat Alia Budget Management System &copy; 2023</p>
+        </footer>
+    </div>
 
     <script>
-        // Mobile menu toggle
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('show');
-        });
-
-        // Category tabs functionality
-        const categoryTabs = document.querySelectorAll('.category-tab');
-        categoryTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                categoryTabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                // In a real implementation, you would filter tools based on category here
-            });
-        });
-
-        // Testimonial slider (basic implementation)
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', function() {
-                dots.forEach(d => d.classList.remove('active'));
-                this.classList.add('active');
-                // In a real implementation, you would change the testimonial content here
-            });
-        });
-
-        // Search functionality
-        const searchInput = document.querySelector('.search-bar input');
-        const searchButton = document.querySelector('.search-bar button');
+        // Company budget data
+        const budgetData = {
+            totalBudget: 5912774,
+            totalExpenditure: 4894474,
+            internalBudget: 1391000,
+            internalExpenditure: 1010075,
+            externalBudget: 115000,
+            externalExpenditure: 186065,
+            internalStaffBudget: 4406774,
+            internalStaffExpenditure: 3698334
+        };
         
-        searchButton.addEventListener('click', function() {
-            if (searchInput.value.trim() !== '') {
-                // In a real implementation, you would search for tools here
-                alert(`Searching for: ${searchInput.value}`);
+        // Calculate remaining budget
+        function calculateBudget() {
+            const totalAllBudgets = budgetData.internalBudget + budgetData.externalBudget + budgetData.internalStaffBudget;
+            const totalAllExpenditures = budgetData.internalExpenditure + budgetData.externalExpenditure + budgetData.internalStaffExpenditure;
+            const remainingBudget = totalAllBudgets - totalAllExpenditures;
+            const utilizationRate = ((totalAllExpenditures / totalAllBudgets) * 100).toFixed(2);
+            
+            // Update the summary section
+            document.getElementById('total-budget').textContent = formatNumber(totalAllBudgets);
+            document.getElementById('total-expenditure').textContent = formatNumber(totalAllExpenditures);
+            document.getElementById('remaining-budget').textContent = formatNumber(remainingBudget);
+            document.getElementById('utilization-rate').textContent = `${utilizationRate}%`;
+            
+            // Update the color of remaining budget
+            const remainingElement = document.getElementById('remaining-budget');
+            if (remainingBudget >= 0) {
+                remainingElement.classList.remove('budget-negative');
+                remainingElement.classList.add('budget-positive');
+            } else {
+                remainingElement.classList.remove('budget-positive');
+                remainingElement.classList.add('budget-negative');
             }
-        });
-
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && searchInput.value.trim() !== '') {
-                // In a real implementation, you would search for tools here
-                alert(`Searching for: ${searchInput.value}`);
-            }
-        });
+            
+            // Create visual charts
+            createCharts();
+            
+            // Show alert with the calculation
+            alert(`Budget Calculation Complete!\n\nTotal Budget: ${formatNumber(totalAllBudgets)}\nTotal Expenditure: ${formatNumber(totalAllExpenditures)}\nRemaining Budget: ${formatNumber(remainingBudget)}`);
+        }
+        
+        // Format numbers with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        
+        // Create budget and expenditure charts
+        function createCharts() {
+            const budgetChart = document.getElementById('budget-chart');
+            const expenditureChart = document.getElementById('expenditure-chart');
+            
+            // Clear previous charts
+            budgetChart.innerHTML = '';
+            expenditureChart.innerHTML = '';
+            
+            // Budget categories and values
+            const categories = ['Internal', 'External', 'Internal Staff'];
+            const budgetValues = [budgetData.internalBudget, budgetData.externalBudget, budgetData.internalStaffBudget];
+            const expenditureValues = [budgetData.internalExpenditure, budgetData.externalExpenditure, budgetData.internalStaffExpenditure];
+            
+            // Find the maximum value for scaling
+            const maxBudget = Math.max(...budgetValues);
+            const maxExpenditure = Math.max(...expenditureValues);
+            
+            // Create budget chart
+            categories.forEach((category, index) => {
+                const barHeight = (budgetValues[index] / maxBudget) * 200;
+                const bar = document.createElement('div');
+                bar.className = 'bar budget-bar';
+                bar.style.height = `${barHeight}px`;
+                bar.style.left = `${index * 120 + 50}px`;
+                bar.title = `${category}: ${formatNumber(budgetValues[index])}`;
+                budgetChart.appendChild(bar);
+                
+                // Add label
+                const label = document.createElement('div');
+                label.textContent = category;
+                label.style.position = 'absolute';
+                label.style.bottom = '-25px';
+                label.style.left = `${index * 120 + 50}px`;
+                label.style.width = '40px';
+                label.style.textAlign = 'center';
+                label.style.fontSize = '14px';
+                label.style.color = '#333';
+                budgetChart.appendChild(label);
+            });
+            
+            // Create expenditure chart
+            categories.forEach((category, index) => {
+                const barHeight = (expenditureValues[index] / maxExpenditure) * 200;
+                const bar = document.createElement('div');
+                bar.className = 'bar expenditure-bar';
+                bar.style.height = `${barHeight}px`;
+                bar.style.left = `${index * 120 + 50}px`;
+                bar.title = `${category}: ${formatNumber(expenditureValues[index])}`;
+                expenditureChart.appendChild(bar);
+                
+                // Add label
+                const label = document.createElement('div');
+                label.textContent = category;
+                label.style.position = 'absolute';
+                label.style.bottom = '-25px';
+                label.style.left = `${index * 120 + 50}px`;
+                label.style.width = '40px';
+                label.style.textAlign = 'center';
+                label.style.fontSize = '14px';
+                label.style.color = '#333';
+                expenditureChart.appendChild(label);
+            });
+        }
+        
+        // Reset data to original values
+        function resetData() {
+            document.getElementById('total-budget').textContent = formatNumber(budgetData.totalBudget);
+            document.getElementById('total-expenditure').textContent = formatNumber(budgetData.totalExpenditure);
+            document.getElementById('remaining-budget').textContent = formatNumber(budgetData.totalBudget - budgetData.totalExpenditure);
+            document.getElementById('utilization-rate').textContent = '82.78%';
+            
+            createCharts();
+            
+            alert('Data has been reset to original values.');
+        }
+        
+        // Event listeners
+        document.getElementById('calculate-btn').addEventListener('click', calculateBudget);
+        document.getElementById('reset-btn').addEventListener('click', resetData);
+        
+        // Initialize the page
+        window.onload = function() {
+            calculateBudget();
+        };
     </script>
 </body>
 </html>
+
+
+
