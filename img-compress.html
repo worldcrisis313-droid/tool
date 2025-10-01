@@ -3,920 +3,1121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABC Company Budget Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <meta name="description" content="Trade stocks and shares with real-time analysis, secure platform, and expert support">
+    <title>TradePro - Advanced Share Trading Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
+            --primary: #1a237e;
+            --primary-light: #534bae;
+            --primary-dark: #000051;
+            --secondary: #00c853;
+            --secondary-dark: #009624;
+            --danger: #f44336;
+            --danger-dark: #ba000d;
+            --warning: #ff9800;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --gray: #757575;
+            --gray-light: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
-            color: #333;
-            transition: all 0.3s ease;
+            color: var(--dark);
+            line-height: 1.6;
         }
         
-        .header {
-            background-color: var(--primary-color);
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
             color: white;
-            padding: 20px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header h1 {
-            font-weight: 700;
-            font-size: 28px;
-            margin: 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .header h1:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-        }
-        
-        .budget-section {
-            background-color: white;
-            border-radius: 8px;
+            padding: 15px 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--secondary);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 0.9rem;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary-dark);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: var(--danger-dark);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        /* Market Overview */
+        .market-overview {
+            padding: 60px 0;
         }
         
         .section-title {
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .section-title:hover {
-            background-color: rgba(52, 152, 219, 0.1);
-            border-radius: 5px;
-        }
-        
-        .budget-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        
-        .budget-table th {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px 15px;
             text-align: center;
-            font-weight: 600;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            color: var(--primary);
         }
         
-        .budget-table td {
-            padding: 10px 15px;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
+        .market-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
         }
         
-        .budget-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        
-        .budget-table tr:hover {
-            background-color: #f1f1f1;
-        }
-        
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-        }
-        
-        .btn-action {
-            padding: 5px 10px;
-            font-size: 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-edit {
-            background-color: #3498db;
-            color: white;
-            border: none;
-        }
-        
-        .btn-delete {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-        }
-        
-        .btn-edit:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-delete:hover {
-            background-color: #c0392b;
-        }
-        
-        .control-panel {
-            background-color: white;
+        .market-card {
+            background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
         }
         
-        .btn-control {
-            margin: 5px;
-            padding: 8px 15px;
+        .market-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .market-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .stock-list {
+            list-style: none;
+        }
+        
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .stock-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stock-name {
             font-weight: 600;
+        }
+        
+        .stock-price {
+            font-weight: 600;
+        }
+        
+        .positive {
+            color: var(--secondary);
+        }
+        
+        .negative {
+            color: var(--danger);
+        }
+        
+        /* Trading Section */
+        .trading-section {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .trading-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .stock-details {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 25px;
+        }
+        
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .stock-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .stock-price-large {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .stock-chart {
+            height: 200px;
+            background: white;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gray-light);
         }
         
         .analysis-section {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 30px;
+            margin: 25px 0;
         }
         
-        .analysis-item {
+        .analysis-section h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .buy-sell-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 1.1rem;
+        }
+        
+        /* Chat Section */
+        .chat-section {
+            padding: 60px 0;
+        }
+        
+        .chat-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            height: 500px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .chat-sidebar {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .chat-sidebar h3 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-list {
+            list-style: none;
+        }
+        
+        .chat-item {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .chat-item:hover, .chat-item.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .chat-main {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-light);
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            align-items: center;
         }
         
-        .analysis-item:last-child {
-            border-bottom: none;
-            font-weight: bold;
-            color: var(--primary-color);
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         
-        .urdu-text {
-            direction: rtl;
-            text-align: right;
-            font-family: 'Jameel Noori Nastaleeq', 'Alvi Lahori', 'Urdu Typesetting', sans-serif;
+        .message {
+            max-width: 70%;
+            padding: 12px 15px;
+            border-radius: 18px;
         }
         
-        .hidden {
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message.admin {
+            align-self: flex-start;
+            background: var(--light);
+            border-bottom-left-radius: 4px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid var(--gray-light);
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: 24px;
+            outline: none;
+        }
+        
+        .chat-input button {
+            margin-left: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Auth Modal */
+        .modal {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
         }
         
         .modal-content {
+            background: white;
             border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         .modal-header {
-            background-color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .auth-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+        }
+        
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .auth-submit {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+        }
+        
+        .auth-switch a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
             color: white;
-            border-bottom: none;
+            padding: 60px 0 30px;
         }
         
-        .modal-footer {
-            border-top: none;
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
         }
         
-        @media print {
-            body * {
-                visibility: hidden;
+        .footer-column h3 {
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .trading-container {
+                grid-template-columns: 1fr;
             }
-            .print-section, .print-section * {
-                visibility: visible;
+            
+            .chat-container {
+                grid-template-columns: 1fr;
+                height: 600px;
             }
-            .print-section {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-            .no-print {
-                display: none !important;
-            }
-            @page {
-                size: landscape;
+            
+            .chat-sidebar {
+                display: none;
             }
         }
         
         @media (max-width: 768px) {
-            .budget-table {
-                font-size: 14px;
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
             }
             
-            .budget-table th, .budget-table td {
-                padding: 8px 5px;
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
             }
             
-            .header h1 {
-                font-size: 22px;
+            .hero h1 {
+                font-size: 2.2rem;
             }
-        }
-        
-        .editable {
-            border-bottom: 1px dashed #3498db;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .editable:hover {
-            background-color: rgba(52, 152, 219, 0.1);
-        }
-        
-        .summary-card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .summary-card h5 {
-            color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        
-        .summary-card .amount {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--secondary-color);
-        }
-        
-        .positive {
-            color: #27ae60 !important;
-        }
-        
-        .negative {
-            color: #e74c3c !important;
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .market-cards {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header text-center print-section">
-        <h1 class="editable" id="mainTitle">Detail of Budget Income and Expenditure for the Year 2024-25 and Approved Budget for Year 2025-26</h1>
-    </div>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>TradePro</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#">Markets</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="#">Analysis</a></li>
+                    <li><a href="#">Learn</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="btn btn-outline" id="loginBtn">Login</button>
+                <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+            </div>
+        </div>
+    </header>
 
-    <div class="container">
-        <!-- Control Panel -->
-        <div class="control-panel no-print">
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="section-title">Control Panel</h3>
-                    <div class="d-flex flex-wrap">
-                        <button class="btn btn-primary btn-control" id="printBtn">
-                            <i class="fas fa-print"></i> Print
-                        </button>
-                        <button class="btn btn-success btn-control" id="pdfBtn">
-                            <i class="fas fa-file-pdf"></i> Create PDF
-                        </button>
-                        <button class="btn btn-info btn-control" id="updateBtn">
-                            <i class="fas fa-sync-alt"></i> Update
-                        </button>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle btn-control" type="button" id="fontDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-font"></i> Font & Size
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="fontDropdown">
-                                <li><a class="dropdown-item" href="#" data-font="Arial">Arial</a></li>
-                                <li><a class="dropdown-item" href="#" data-font="Times New Roman">Times New Roman</a></li>
-                                <li><a class="dropdown-item" href="#" data-font="Georgia">Georgia</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#" data-size="12">12px</a></li>
-                                <li><a class="dropdown-item" href="#" data-size="14">14px</a></li>
-                                <li><a class="dropdown-item" href="#" data-size="16">16px</a></li>
-                            </ul>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Trade Smarter, Not Harder</h1>
+            <p>Advanced trading platform with real-time analytics, expert insights, and secure transactions. Start trading today with our intuitive platform.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" style="padding: 12px 30px;">Start Trading</button>
+                <button class="btn btn-outline" style="padding: 12px 30px;">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Overview -->
+    <section class="market-overview">
+        <div class="container">
+            <h2 class="section-title">Market Overview</h2>
+            <div class="market-cards">
+                <div class="market-card">
+                    <h3><i class="fas fa-fire"></i> Top Traded</h3>
+                    <ul class="stock-list">
+                        <li class="stock-item">
+                            <span class="stock-name">AAPL - Apple Inc.</span>
+                            <span class="stock-price positive">$182.63 <i class="fas fa-arrow-up"></i></span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">MSFT - Microsoft</span>
+                            <span class="stock-price positive">$337.42 <i class="fas fa-arrow-up"></i></span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">TSLA - Tesla Inc.</span>
+                            <span class="stock-price negative">$245.18 <i class="fas fa-arrow-down"></i></span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">AMZN - Amazon</span>
+                            <span class="stock-price positive">$145.21 <i class="fas fa-arrow-up"></i></span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">GOOGL - Alphabet</span>
+                            <span class="stock-price positive">$138.21 <i class="fas fa-arrow-up"></i></span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="market-card">
+                    <h3><i class="fas fa-chart-line"></i> Top Gainers</h3>
+                    <ul class="stock-list">
+                        <li class="stock-item">
+                            <span class="stock-name">NVDA - NVIDIA</span>
+                            <span class="stock-price positive">+5.2%</span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">META - Meta Platforms</span>
+                            <span class="stock-price positive">+3.8%</span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">AMD - Advanced Micro</span>
+                            <span class="stock-price positive">+3.5%</span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">NFLX - Netflix</span>
+                            <span class="stock-price positive">+2.9%</span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">ADBE - Adobe</span>
+                            <span class="stock-price positive">+2.7%</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="market-card">
+                    <h3><i class="fas fa-chart-line negative"></i> Top Losers</h3>
+                    <ul class="stock-list">
+                        <li class="stock-item">
+                            <span class="stock-name">WMT - Walmart</span>
+                            <span class="stock-price negative">-2.4%</span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">JPM - JPMorgan</span>
+                            <span class="stock-price negative">-1.9%</span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">DIS - Disney</span>
+                            <span class="stock-price negative">-1.7%</span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">XOM - Exxon Mobil</span>
+                            <span class="stock-price negative">-1.5%</span>
+                        </li>
+                        <li class="stock-item">
+                            <span class="stock-name">PFE - Pfizer</span>
+                            <span class="stock-price negative">-1.3%</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading Section -->
+    <section class="trading-section">
+        <div class="container">
+            <h2 class="section-title">Trade & Analyze</h2>
+            <div class="trading-container">
+                <div class="stock-details">
+                    <div class="stock-header">
+                        <div>
+                            <h2 class="stock-title">Apple Inc. (AAPL)</h2>
+                            <p>Technology • NASDAQ</p>
                         </div>
-                        <button class="btn btn-warning btn-control" id="languageBtn">
-                            <i class="fas fa-language"></i> Switch to Urdu
-                        </button>
-                        <button class="btn btn-dark btn-control" id="addHeadBtn">
-                            <i class="fas fa-plus"></i> Add New Head
-                        </button>
+                        <div class="stock-price-large positive">$182.63</div>
+                    </div>
+                    
+                    <div class="stock-chart">
+                        <!-- In a real app, this would be a charting library -->
+                        <p>Interactive Stock Chart Would Appear Here</p>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3><i class="fas fa-analytics"></i> Analysis</h3>
+                        <p>Apple shows strong fundamentals with consistent revenue growth and expanding services segment. The company's innovation pipeline and loyal customer base provide stability. However, valuation remains high relative to historical averages.</p>
+                        <p><strong>Recommendation:</strong> BUY for long-term growth, but consider dollar-cost averaging due to current market volatility.</p>
+                    </div>
+                    
+                    <div class="buy-sell-actions">
+                        <button class="btn btn-primary action-btn">Buy AAPL</button>
+                        <button class="btn btn-danger action-btn">Sell AAPL</button>
+                    </div>
+                </div>
+                
+                <div class="stock-details">
+                    <div class="stock-header">
+                        <div>
+                            <h2 class="stock-title">Microsoft (MSFT)</h2>
+                            <p>Technology • NASDAQ</p>
+                        </div>
+                        <div class="stock-price-large positive">$337.42</div>
+                    </div>
+                    
+                    <div class="stock-chart">
+                        <!-- In a real app, this would be a charting library -->
+                        <p>Interactive Stock Chart Would Appear Here</p>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3><i class="fas fa-analytics"></i> Analysis</h3>
+                        <p>Microsoft continues to dominate enterprise software and cloud computing with Azure. The company's diverse revenue streams and strong balance sheet make it a defensive play in tech. Recent AI integrations position it well for future growth.</p>
+                        <p><strong>Recommendation:</strong> STRONG BUY for both growth and dividend investors.</p>
+                    </div>
+                    
+                    <div class="buy-sell-actions">
+                        <button class="btn btn-primary action-btn">Buy MSFT</button>
+                        <button class="btn btn-danger action-btn">Sell MSFT</button>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Budget Summary -->
-        <div class="row print-section">
-            <div class="col-md-4">
-                <div class="summary-card">
-                    <h5>Total Budget</h5>
-                    <div class="amount">₹5,912,774</div>
+    <!-- Chat Section -->
+    <section class="chat-section">
+        <div class="container">
+            <h2 class="section-title">Live Support</h2>
+            <div class="chat-container">
+                <div class="chat-sidebar">
+                    <h3><i class="fas fa-headset"></i> Support Team</h3>
+                    <ul class="chat-list">
+                        <li class="chat-item active">
+                            <div><strong>Sarah Johnson</strong></div>
+                            <div>Online Trading Specialist</div>
+                        </li>
+                        <li class="chat-item">
+                            <div><strong>Michael Chen</strong></div>
+                            <div>Market Analyst</div>
+                        </li>
+                        <li class="chat-item">
+                            <div><strong>Emily Rodriguez</strong></div>
+                            <div>Account Support</div>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-card">
-                    <h5>Total Expenditure</h5>
-                    <div class="amount">₹4,894,474</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-card">
-                    <h5>Remaining Budget</h5>
-                    <div class="amount positive">₹1,018,300</div>
+                <div class="chat-main">
+                    <div class="chat-header">
+                        <div>
+                            <h3>Sarah Johnson</h3>
+                            <p>Online Trading Specialist • Online</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline" style="color: var(--primary); border-color: var(--primary);">Call</button>
+                        </div>
+                    </div>
+                    <div class="chat-messages">
+                        <div class="message admin">
+                            <p>Hello! Welcome to TradePro support. How can I assist you with your trading today?</p>
+                        </div>
+                        <div class="message user">
+                            <p>Hi Sarah, I'm interested in learning more about your advanced analysis tools.</p>
+                        </div>
+                        <div class="message admin">
+                            <p>Our platform offers real-time technical analysis, fundamental data, and AI-powered insights. Would you like me to walk you through the features?</p>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type your message...">
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Budget Sections -->
-        <div class="row print-section">
-            <div class="col-md-6">
-                <div class="budget-section">
-                    <h3 class="section-title editable" id="title2024">Budget Income and Expenditure Details for the Year 2024-25 (Total Periods A to Z)</h3>
-                    <table class="budget-table">
-                        <thead>
-                            <tr>
-                                <th>Sr. No.</th>
-                                <th>Name of Head</th>
-                                <th>Total Approved Budget Income</th>
-                                <th>Name of Head</th>
-                                <th>Total Approved Budget Expenditure</th>
-                                <th>Total Expenses 12 Months (April 2024 to March 2025)</th>
-                                <th class="no-print">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="budget2024Table">
-                            <!-- Data will be populated by JavaScript -->
-                        </tbody>
-                    </table>
-                    <button class="btn btn-primary no-print" id="addRow2024">
-                        <i class="fas fa-plus"></i> Add Row
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Login to TradePro</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Login</div>
+                <div class="auth-tab" data-tab="signup">Sign Up</div>
+            </div>
+            
+            <div class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label for="loginId">Username, Email or Mobile</label>
+                    <input type="text" id="loginId" class="form-control" placeholder="Enter username, email or mobile">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password">
+                </div>
+                <div class="form-options">
+                    <div>
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button class="btn btn-primary auth-submit">Login</button>
+                <div class="auth-switch">
+                    <p>Don't have an account? <a href="#" id="switchToSignup">Sign up</a></p>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn btn-outline" style="color: var(--primary); border-color: var(--primary); width: 100%;">
+                        <i class="fas fa-mobile-alt"></i> Login with OTP
                     </button>
                 </div>
             </div>
             
-            <div class="col-md-6">
-                <div class="budget-section">
-                    <h3 class="section-title editable" id="title2025">Details of Approved Budget Income and Expenditure for the Year 2025-26 (Total Periods A to Z)</h3>
-                    <table class="budget-table">
-                        <thead>
-                            <tr>
-                                <th>Sr. No.</th>
-                                <th>Name of Head</th>
-                                <th>Approved Budget Income</th>
-                                <th>Name of Head</th>
-                                <th>Approved Budget Expenditure</th>
-                                <th class="no-print">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="budget2025Table">
-                            <!-- Data will be populated by JavaScript -->
-                        </tbody>
-                    </table>
-                    <button class="btn btn-primary no-print" id="addRow2025">
-                        <i class="fas fa-plus"></i> Add Row
-                    </button>
+            <div class="auth-form" id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" class="form-control" placeholder="Enter your full name">
                 </div>
-            </div>
-        </div>
-
-        <!-- Analysis Section -->
-        <div class="analysis-section print-section">
-            <h3 class="section-title">Budget Analysis</h3>
-            <div id="analysisContent">
-                <div class="analysis-item">
-                    <span>Total Budget Androon:</span>
-                    <span id="totalBudgetAndroon">₹1,391,000</span>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" class="form-control" placeholder="Enter your email">
                 </div>
-                <div class="analysis-item">
-                    <span>Total Expenditure Androon:</span>
-                    <span id="totalExpenditureAndroon">₹1,010,075</span>
+                <div class="form-group">
+                    <label for="signupMobile">Mobile Number</label>
+                    <input type="tel" id="signupMobile" class="form-control" placeholder="Enter your mobile number">
                 </div>
-                <div class="analysis-item">
-                    <span>Total Budget Baroon:</span>
-                    <span id="totalBudgetBaroon">₹115,000</span>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" class="form-control" placeholder="Create a password">
                 </div>
-                <div class="analysis-item">
-                    <span>Total Expenditure Baroon:</span>
-                    <span id="totalExpenditureBaroon">₹186,065</span>
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" class="form-control" placeholder="Confirm your password">
                 </div>
-                <div class="analysis-item">
-                    <span>Total Budget Amla Androon:</span>
-                    <span id="totalBudgetAmlaAndroon">₹4,406,774</span>
+                <div class="form-options">
+                    <div>
+                        <input type="checkbox" id="agreeTerms">
+                        <label for="agreeTerms">I agree to the Terms & Conditions</label>
+                    </div>
                 </div>
-                <div class="analysis-item">
-                    <span>Total Expenditure Amla Androon:</span>
-                    <span id="totalExpenditureAmlaAndroon">₹3,698,334</span>
-                </div>
-                <div class="analysis-item">
-                    <span>Total Budget (Androon + Baroon):</span>
-                    <span id="totalBudgetCombined">₹1,506,000</span>
-                </div>
-                <div class="analysis-item">
-                    <span>Total Expenditure (Androon + Baroon):</span>
-                    <span id="totalExpenditureCombined">₹1,196,140</span>
-                </div>
-                <div class="analysis-item">
-                    <span>Remaining Budget (Androon + Baroon):</span>
-                    <span id="remainingBudgetCombined" class="positive">₹309,860</span>
+                <button class="btn btn-primary auth-submit">Create Account</button>
+                <div class="auth-switch">
+                    <p>Already have an account? <a href="#" id="switchToLogin">Login</a></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Budget Item</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>TradePro</h3>
+                    <p>Advanced trading platform with real-time analytics, expert insights, and secure transactions.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form id="editForm">
-                        <input type="hidden" id="editId">
-                        <input type="hidden" id="editTable">
-                        <div class="mb-3">
-                            <label for="headName" class="form-label">Head Name</label>
-                            <input type="text" class="form-control" id="headName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="budgetIncome" class="form-label">Budget Income</label>
-                            <input type="number" class="form-control" id="budgetIncome" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="reHeadName" class="form-label">Re-Head Name</label>
-                            <input type="text" class="form-control" id="reHeadName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="budgetExpenditure" class="form-label">Budget Expenditure</label>
-                            <input type="number" class="form-control" id="budgetExpenditure" required>
-                        </div>
-                        <div class="mb-3" id="monthlyExpenditureField">
-                            <label for="monthlyExpenditure" class="form-label">Monthly Expenditure (April 2024 to March 2025)</label>
-                            <input type="number" class="form-control" id="monthlyExpenditure">
-                        </div>
-                    </form>
+                <div class="footer-column">
+                    <h3>Markets</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Stocks</a></li>
+                        <li><a href="#">ETFs</a></li>
+                        <li><a href="#">Forex</a></li>
+                        <li><a href="#">Commodities</a></li>
+                        <li><a href="#">Cryptocurrencies</a></li>
+                    </ul>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="saveChanges">Save Changes</button>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Learning Center</a></li>
+                        <li><a href="#">Market Analysis</a></li>
+                        <li><a href="#">Trading Strategies</a></li>
+                        <li><a href="#">Webinars</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Head Modal -->
-    <div class="modal fade" id="addHeadModal" tabindex="-1" aria-labelledby="addHeadModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addHeadModalLabel">Add New Head</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addHeadForm">
-                        <div class="mb-3">
-                            <label for="newHeadName" class="form-label">Head Name</label>
-                            <input type="text" class="form-control" id="newHeadName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newBudgetIncome" class="form-label">Budget Income</label>
-                            <input type="number" class="form-control" id="newBudgetIncome" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newBudgetExpenditure" class="form-label">Budget Expenditure</label>
-                            <input type="number" class="form-control" id="newBudgetExpenditure" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="headType" class="form-label">Head Type</label>
-                            <select class="form-control" id="headType" required>
-                                <option value="androon">Androon</option>
-                                <option value="baroon">Baroon</option>
-                                <option value="amla-androon">Amla Androon</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="headYear" class="form-label">Budget Year</label>
-                            <select class="form-control" id="headYear" required>
-                                <option value="2024">2024-25</option>
-                                <option value="2025">2025-26</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="saveNewHead">Save Head</button>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">System Status</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
                 </div>
             </div>
+            <div class="copyright">
+                <p>&copy; 2023 TradePro. All rights reserved. Trading involves risk and may not be suitable for all investors.</p>
+            </div>
         </div>
-    </div>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Sample data
-        let budgetData2024 = [
-            { id: 1, headName: "Budget Sayer Androon", budgetIncome: 1391000, reHeadName: "Budget Expenditure Androon", budgetExpenditure: 1010075, monthlyExpenditure: 84173 },
-            { id: 2, headName: "Budget Sayer Baroon", budgetIncome: 115000, reHeadName: "Budget Expenditure Baroon", budgetExpenditure: 186065, monthlyExpenditure: 15505 },
-            { id: 3, headName: "Budget Amla Androon", budgetIncome: 4406774, reHeadName: "Expenditure Androon", budgetExpenditure: 3698334, monthlyExpenditure: 308194 }
-        ];
-
-        let budgetData2025 = [
-            { id: 1, headName: "Budget Sayer Androon", budgetIncome: 1450000, reHeadName: "Budget Expenditure Androon", budgetExpenditure: 1050000 },
-            { id: 2, headName: "Budget Sayer Baroon", budgetIncome: 120000, reHeadName: "Budget Expenditure Baroon", budgetExpenditure: 190000 },
-            { id: 3, headName: "Budget Amla Androon", budgetIncome: 4500000, reHeadName: "Expenditure Androon", budgetExpenditure: 3750000 }
-        ];
-
-        let currentLanguage = 'english';
-        let nextId2024 = 4;
-        let nextId2025 = 4;
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            renderTables();
-            updateAnalysis();
-            setupEventListeners();
-            setupEditableText();
+        // Auth Modal Functionality
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const authModal = document.getElementById('authModal');
+        const closeModal = document.querySelector('.close-modal');
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authForms = document.querySelectorAll('.auth-form');
+        const switchToSignup = document.getElementById('switchToSignup');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const modalTitle = document.getElementById('modalTitle');
+        
+        // Open modal for login
+        loginBtn.addEventListener('click', () => {
+            authModal.style.display = 'flex';
+            switchToLogin.click();
         });
-
-        // Render tables with data
-        function renderTables() {
-            renderTable('budget2024Table', budgetData2024, true);
-            renderTable('budget2025Table', budgetData2025, false);
-        }
-
-        // Render a specific table
-        function renderTable(tableId, data, is2024) {
-            const tableBody = document.getElementById(tableId);
-            tableBody.innerHTML = '';
-            
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                
-                // Serial number
-                const srNoCell = document.createElement('td');
-                srNoCell.textContent = item.id;
-                row.appendChild(srNoCell);
-                
-                // Head name
-                const headNameCell = document.createElement('td');
-                headNameCell.textContent = item.headName;
-                row.appendChild(headNameCell);
-                
-                // Budget income
-                const incomeCell = document.createElement('td');
-                incomeCell.textContent = formatCurrency(item.budgetIncome);
-                row.appendChild(incomeCell);
-                
-                // Re-head name
-                const reHeadNameCell = document.createElement('td');
-                reHeadNameCell.textContent = item.reHeadName;
-                row.appendChild(reHeadNameCell);
-                
-                // Budget expenditure
-                const expenditureCell = document.createElement('td');
-                expenditureCell.textContent = formatCurrency(item.budgetExpenditure);
-                row.appendChild(expenditureCell);
-                
-                // Monthly expenditure (only for 2024-25)
-                if (is2024) {
-                    const monthlyExpenditureCell = document.createElement('td');
-                    monthlyExpenditureCell.textContent = formatCurrency(item.monthlyExpenditure);
-                    row.appendChild(monthlyExpenditureCell);
-                }
-                
-                // Actions
-                const actionsCell = document.createElement('td');
-                actionsCell.className = 'action-buttons no-print';
-                
-                const editButton = document.createElement('button');
-                editButton.className = 'btn-action btn-edit';
-                editButton.innerHTML = '<i class="fas fa-edit"></i>';
-                editButton.addEventListener('click', () => openEditModal(item, tableId));
-                
-                const deleteButton = document.createElement('button');
-                deleteButton.className = 'btn-action btn-delete';
-                deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-                deleteButton.addEventListener('click', () => deleteRow(item.id, tableId));
-                
-                actionsCell.appendChild(editButton);
-                actionsCell.appendChild(deleteButton);
-                row.appendChild(actionsCell);
-                
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Format currency
-        function formatCurrency(amount) {
-            return '₹' + amount.toLocaleString('en-IN');
-        }
-
-        // Update analysis section
-        function updateAnalysis() {
-            const totalBudgetAndroon = 1391000;
-            const totalExpenditureAndroon = 1010075;
-            const totalBudgetBaroon = 115000;
-            const totalExpenditureBaroon = 186065;
-            const totalBudgetAmlaAndroon = 4406774;
-            const totalExpenditureAmlaAndroon = 3698334;
-            
-            const totalBudgetCombined = totalBudgetAndroon + totalBudgetBaroon;
-            const totalExpenditureCombined = totalExpenditureAndroon + totalExpenditureBaroon;
-            const remainingBudgetCombined = totalBudgetCombined - totalExpenditureCombined;
-            
-            document.getElementById('totalBudgetAndroon').textContent = formatCurrency(totalBudgetAndroon);
-            document.getElementById('totalExpenditureAndroon').textContent = formatCurrency(totalExpenditureAndroon);
-            document.getElementById('totalBudgetBaroon').textContent = formatCurrency(totalBudgetBaroon);
-            document.getElementById('totalExpenditureBaroon').textContent = formatCurrency(totalExpenditureBaroon);
-            document.getElementById('totalBudgetAmlaAndroon').textContent = formatCurrency(totalBudgetAmlaAndroon);
-            document.getElementById('totalExpenditureAmlaAndroon').textContent = formatCurrency(totalExpenditureAmlaAndroon);
-            document.getElementById('totalBudgetCombined').textContent = formatCurrency(totalBudgetCombined);
-            document.getElementById('totalExpenditureCombined').textContent = formatCurrency(totalExpenditureCombined);
-            
-            const remainingElement = document.getElementById('remainingBudgetCombined');
-            remainingElement.textContent = formatCurrency(remainingBudgetCombined);
-            if (remainingBudgetCombined >= 0) {
-                remainingElement.className = 'positive';
-            } else {
-                remainingElement.className = 'negative';
-            }
-        }
-
-        // Open edit modal
-        function openEditModal(item, tableId) {
-            document.getElementById('editId').value = item.id;
-            document.getElementById('editTable').value = tableId;
-            document.getElementById('headName').value = item.headName;
-            document.getElementById('budgetIncome').value = item.budgetIncome;
-            document.getElementById('reHeadName').value = item.reHeadName;
-            document.getElementById('budgetExpenditure').value = item.budgetExpenditure;
-            
-            // Show/hide monthly expenditure field based on table
-            const monthlyExpenditureField = document.getElementById('monthlyExpenditureField');
-            if (tableId === 'budget2024Table') {
-                monthlyExpenditureField.style.display = 'block';
-                document.getElementById('monthlyExpenditure').value = item.monthlyExpenditure || '';
-            } else {
-                monthlyExpenditureField.style.display = 'none';
-            }
-            
-            const modal = new bootstrap.Modal(document.getElementById('editModal'));
-            modal.show();
-        }
-
-        // Save changes from modal
-        document.getElementById('saveChanges').addEventListener('click', function() {
-            const id = parseInt(document.getElementById('editId').value);
-            const tableId = document.getElementById('editTable').value;
-            const headName = document.getElementById('headName').value;
-            const budgetIncome = parseFloat(document.getElementById('budgetIncome').value);
-            const reHeadName = document.getElementById('reHeadName').value;
-            const budgetExpenditure = parseFloat(document.getElementById('budgetExpenditure').value);
-            
-            let dataArray;
-            if (tableId === 'budget2024Table') {
-                dataArray = budgetData2024;
-            } else {
-                dataArray = budgetData2025;
-            }
-            
-            const itemIndex = dataArray.findIndex(item => item.id === id);
-            if (itemIndex !== -1) {
-                dataArray[itemIndex].headName = headName;
-                dataArray[itemIndex].budgetIncome = budgetIncome;
-                dataArray[itemIndex].reHeadName = reHeadName;
-                dataArray[itemIndex].budgetExpenditure = budgetExpenditure;
-                
-                if (tableId === 'budget2024Table') {
-                    const monthlyExpenditure = parseFloat(document.getElementById('monthlyExpenditure').value);
-                    dataArray[itemIndex].monthlyExpenditure = monthlyExpenditure;
-                }
-                
-                renderTables();
-                updateAnalysis();
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
-                modal.hide();
+        
+        // Open modal for signup
+        signupBtn.addEventListener('click', () => {
+            authModal.style.display = 'flex';
+            switchToSignup.click();
+        });
+        
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            authModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === authModal) {
+                authModal.style.display = 'none';
             }
         });
-
-        // Delete a row
-        function deleteRow(id, tableId) {
-            if (confirm('Are you sure you want to delete this item?')) {
-                let dataArray;
-                if (tableId === 'budget2024Table') {
-                    dataArray = budgetData2024;
-                } else {
-                    dataArray = budgetData2025;
-                }
+        
+        // Switch between login and signup tabs
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
                 
-                const itemIndex = dataArray.findIndex(item => item.id === id);
-                if (itemIndex !== -1) {
-                    dataArray.splice(itemIndex, 1);
-                    renderTables();
-                    updateAnalysis();
-                }
-            }
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Print button
-            document.getElementById('printBtn').addEventListener('click', function() {
-                window.print();
-            });
-            
-            // PDF button
-            document.getElementById('pdfBtn').addEventListener('click', function() {
-                createPDF();
-            });
-            
-            // Update button
-            document.getElementById('updateBtn').addEventListener('click', function() {
-                alert('Budget data updated successfully!');
-            });
-            
-            // Font and size dropdown
-            document.querySelectorAll('.dropdown-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const font = this.getAttribute('data-font');
-                    const size = this.getAttribute('data-size');
-                    
-                    if (font) {
-                        document.body.style.fontFamily = font;
-                    }
-                    if (size) {
-                        document.body.style.fontSize = size + 'px';
+                // Update active tab
+                authTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active form
+                authForms.forEach(form => {
+                    form.classList.remove('active');
+                    if (form.id === `${tabId}Form`) {
+                        form.classList.add('active');
                     }
                 });
-            });
-            
-            // Language button
-            document.getElementById('languageBtn').addEventListener('click', function() {
-                toggleLanguage();
-            });
-            
-            // Add row buttons
-            document.getElementById('addRow2024').addEventListener('click', function() {
-                addNewRow('budget2024Table', true);
-            });
-            
-            document.getElementById('addRow2025').addEventListener('click', function() {
-                addNewRow('budget2025Table', false);
-            });
-            
-            // Add head button
-            document.getElementById('addHeadBtn').addEventListener('click', function() {
-                const modal = new bootstrap.Modal(document.getElementById('addHeadModal'));
-                modal.show();
-            });
-            
-            // Save new head
-            document.getElementById('saveNewHead').addEventListener('click', function() {
-                const headName = document.getElementById('newHeadName').value;
-                const budgetIncome = parseFloat(document.getElementById('newBudgetIncome').value);
-                const budgetExpenditure = parseFloat(document.getElementById('newBudgetExpenditure').value);
-                const headType = document.getElementById('headType').value;
-                const headYear = document.getElementById('headYear').value;
                 
-                let dataArray;
-                let nextId;
-                
-                if (headYear === '2024') {
-                    dataArray = budgetData2024;
-                    nextId = nextId2024++;
-                } else {
-                    dataArray = budgetData2025;
-                    nextId = nextId2025++;
-                }
-                
-                const newItem = {
-                    id: nextId,
-                    headName: headName,
-                    budgetIncome: budgetIncome,
-                    reHeadName: headType === 'androon' ? 'Budget Expenditure Androon' : 
-                                headType === 'baroon' ? 'Budget Expenditure Baroon' :
-                                headType === 'amla-androon' ? 'Expenditure Androon' : 'Other Expenditure',
-                    budgetExpenditure: budgetExpenditure
-                };
-                
-                if (headYear === '2024') {
-                    newItem.monthlyExpenditure = Math.round(budgetExpenditure / 12);
-                }
-                
-                dataArray.push(newItem);
-                renderTables();
-                updateAnalysis();
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('addHeadModal'));
-                modal.hide();
-                
-                // Reset form
-                document.getElementById('addHeadForm').reset();
+                // Update modal title
+                modalTitle.textContent = tabId === 'login' ? 'Login to TradePro' : 'Create Account';
             });
-        }
-
-        // Setup editable text
-        function setupEditableText() {
-            const editableElements = document.querySelectorAll('.editable');
-            
-            editableElements.forEach(element => {
-                element.addEventListener('click', function() {
-                    const currentText = this.textContent;
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.value = currentText;
-                    input.className = 'form-control';
-                    
-                    this.innerHTML = '';
-                    this.appendChild(input);
-                    input.focus();
-                    
-                    input.addEventListener('blur', function() {
-                        const newText = this.value;
-                        this.parentElement.textContent = newText;
-                    });
-                    
-                    input.addEventListener('keypress', function(e) {
-                        if (e.key === 'Enter') {
-                            this.blur();
-                        }
-                    });
-                });
-            });
-        }
-
-        // Add new row
-        function addNewRow(tableId, is2024) {
-            let dataArray;
-            let nextId;
-            
-            if (is2024) {
-                dataArray = budgetData2024;
-                nextId = nextId2024++;
-            } else {
-                dataArray = budgetData2025;
-                nextId = nextId2025++;
+        });
+        
+        // Switch to signup from login form
+        switchToSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('[data-tab="signup"]').click();
+        });
+        
+        // Switch to login from signup form
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('[data-tab="login"]').click();
+        });
+        
+        // Chat functionality
+        const chatInput = document.querySelector('.chat-input input');
+        const chatSendBtn = document.querySelector('.chat-input button');
+        const chatMessages = document.querySelector('.chat-messages');
+        
+        chatSendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
             }
-            
-            const newItem = {
-                id: nextId,
-                headName: "New Head",
-                budgetIncome: 0,
-                reHeadName: "New Re-Head",
-                budgetExpenditure: 0
-            };
-            
-            if (is2024) {
-                newItem.monthlyExpenditure = 0;
-            }
-            
-            dataArray.push(newItem);
-            renderTables();
-            updateAnalysis();
-            
-            // Open edit modal for the new item
-            openEditModal(newItem, tableId);
-        }
-
-        // Toggle language between English and Urdu
-        function toggleLanguage() {
-            const button = document.getElementById('languageBtn');
-            
-            if (currentLanguage === 'english') {
-                // Switch to Urdu
-                document.body.classList.add('urdu-text');
-                button.innerHTML = '<i class="fas fa-language"></i> Switch to English';
-                currentLanguage = 'urdu';
+        });
+        
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'user');
+                messageElement.innerHTML = `<p>${message}</p>`;
+                chatMessages.appendChild(messageElement);
+                chatInput.value = '';
                 
-                // Update headers and labels (simplified example)
-                document.getElementById('mainTitle').textContent = 'بجٹ آمدنی اور اخراجات کی تفصیلات برائے سال 2024-25 اور منظوری شدہ بجٹ برائے سال 2025-26';
-                document.getElementById('title2024').textContent = 'بجٹ آمدنی اور اخراجات کی تفصیلات برائے سال 2024-25 (مدت A سے Z تک کا مجموعہ)';
-                document.getElementById('title2025').textContent = 'منظوری شدہ بجٹ آمدنی اور اخراجات کی تفصیلات برائے سال 2025-26 (مدت A سے Z تک کا مجموعہ)';
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
                 
-            } else {
-                // Switch to English
-                document.body.classList.remove('urdu-text');
-                button.innerHTML = '<i class="fas fa-language"></i> Switch to Urdu';
-                currentLanguage = 'english';
-                
-                // Restore original headers and labels
-                document.getElementById('mainTitle').textContent = 'Detail of Budget Income and Expenditure for the Year 2024-25 and Approved Budget for Year 2025-26';
-                document.getElementById('title2024').textContent = 'Budget Income and Expenditure Details for the Year 2024-25 (Total Periods A to Z)';
-                document.getElementById('title2025').textContent = 'Details of Approved Budget Income and Expenditure for the Year 2025-26 (Total Periods A to Z)';
+                // Simulate admin response after a delay
+                setTimeout(() => {
+                    const adminResponse = document.createElement('div');
+                    adminResponse.classList.add('message', 'admin');
+                    adminResponse.innerHTML = `<p>Thank you for your message. Our support team will assist you shortly with your inquiry about our analysis tools.</p>`;
+                    chatMessages.appendChild(adminResponse);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1500);
             }
         }
-
-        // Create PDF
-        function createPDF() {
-            const { jsPDF } = window.jspdf;
-            const
+        
+        // Stock item click functionality
+        const stockItems = document.querySelectorAll('.stock-item');
+        stockItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // In a real app, this would load the selected stock's data
+                alert('Stock details would load here in the full application');
+            });
+        });
+    </script>
+</body>
+</html>
