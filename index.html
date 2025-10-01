@@ -1,1 +1,214 @@
+{
+  "name": "trade-clone-starter",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "ws": "node server/ws-server.js"
+  },
+  "dependencies": {
+    "next": "14.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "swr": "^2.1.0",
+    "socket.io": "^4.7.0",
+    "socket.io-client": "^4.7.0",
+    "clsx": "^1.2.1",
+    "axios": "^1.4.0"
+  }
+}
+module.exports = {
+  content: ['./pages/**/*.{js,jsx}', './components/**/*.{js,jsx}'],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          50: '#eef2ff',
+          500: '#1e40af',
+        }
+      }
+    }
+  },
+  plugins: []
+}
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  }
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-slate-50 text-slate-800;
+}
+import '../styles/globals.css'
+
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />
+}
+import Link from 'next/link'
+import { useState } from 'react'
+export default function Header(){
+  const [open, setOpen] = useState(false)
+  return (
+    <header className="bg-white shadow">
+      <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
+        <Link href="/"><a className="text-xl font-bold text-brand-500">TradeClone</a></Link>
+        <nav className="hidden md:flex gap-4">
+          <Link href="/markets"><a className="hover:underline">Markets</a></Link>
+          <Link href="/research"><a className="hover:underline">Research</a></Link>
+          <Link href="/dashboard"><a className="hover:underline">Account</a></Link>
+        </nav>
+        <div className="md:hidden">
+          <button onClick={()=>setOpen(!open)} aria-expanded={open} className="p-2">Menu</button>
+        </div>
+      </div>
+      {open && (
+        <div className="md:hidden bg-white border-t">
+          <div className="px-4 py-2 flex flex-col gap-2">
+            <Link href="/markets"><a>Markets</a></Link>
+            <Link href="/research"><a>Research</a></Link>
+            <Link href="/dashboard"><a>Account</a></Link>
+          </div>
+        </div>
+      )}
+    </header>
+  )
+}
+import Header from '../components/Header'
+import Link from 'next/link'
+
+export default function Home(){
+  return (
+    <div>
+      <Header />
+      <main className="max-w-6xl mx-auto px-4 py-12">
+        <section className="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h1 className="text-4xl font-extrabold">Modern trading, simplified</h1>
+            <p className="mt-4 text-slate-600">Real-time quotes, charts and research — demo build.</p>
+            <div className="mt-6 flex gap-3">
+              <Link href="/markets"><a className="bg-brand-500 text-white px-4 py-2 rounded">View Markets</a></Link>
+              <Link href="/research"><a className="border px-4 py-2 rounded">Research</a></Link>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded shadow">
+            <h3 className="font-semibold">Market Watch (live demo)</h3>
+            <p className="mt-2 text-sm text-slate-500">Connects to a mock WebSocket providing price ticks.</p>
+            <Link href="/markets"><a className="mt-4 inline-block text-brand-500">Open Market Watch →</a></Link>
+          </div>
+        </section>
+      </main>
+    </div>
+  )
+}
+import Header from '../../components/Header'
+import { useEffect, useState } from 'react'
+import io from 'socket.io-client'
+
+let socket
+
+export default function Markets(){
+  const [quotes, setQuotes] = useState([
+    { symbol: 'ABC', price: 100, change: 0 },
+    { symbol: 'XYZ', price: 250, change: 0 },
+    { symbol: 'NSE:INFY', price: 1530, change: 0 }
+  ])
+
+  useEffect(() => {
+    socket = io(process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:4000')
+    socket.on('price', (tick) => {
+      setQuotes(prev => prev.map(q => q.symbol === tick.symbol ? { ...q, price: tick.price, change: +(tick.price - q.price).toFixed(2) } : q))
+    })
+    return () => socket?.disconnect()
+  }, [])
+
+  return (
+    <div>
+      <Header />
+      <main className="max-w-6xl mx-auto px-4 py-8">
+        <h2 className="text-2xl font-semibold">Market Watch</h2>
+        <div className="mt-4 bg-white rounded shadow">
+          <table className="w-full text-left">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="p-3">Symbol</th>
+                <th className="p-3">Price</th>
+                <th className="p-3">Change</th>
+              </tr>
+            </thead>
+            <tbody>
+              {quotes.map(q => (
+                <tr key={q.symbol} className="border-t">
+                  <td className="p-3 font-medium">{q.symbol}</td>
+                  <td className="p-3">{q.price.toFixed(2)}</td>
+                  <td className={`p-3 ${q.change > 0 ? 'text-emerald-600' : q.change < 0 ? 'text-rose-600' : ''}`}>{q.change > 0 ? '+' : ''}{q.change.toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  )
+}
+import { useRouter } from 'next/router'
+import Header from '../../components/Header'
+
+export default function SymbolDetail(){
+  const router = useRouter()
+  const { symbol } = router.query
+  return (
+    <div>
+      <Header />
+      <main className="max-w-4xl mx-auto px-4 py-8">
+        <h1 className="text-2xl font-bold">{symbol}</h1>
+        <div className="mt-4 bg-white p-4 rounded shadow">
+          <p>Price chart placeholder — integrate TradingView or Chart component here.</p>
+        </div>
+      </main>
+    </div>
+  )
+}
+const { createServer } = require('http')
+const { Server } = require('socket.io')
+
+const httpServer = createServer()
+const io = new Server(httpServer, {
+  cors: { origin: '*' }
+})
+
+const symbols = [
+  { symbol: 'ABC', price: 100 },
+  { symbol: 'XYZ', price: 250 },
+  { symbol: 'NSE:INFY', price: 1530 }
+]
+
+function randomWalk(p) {
+  const change = (Math.random() - 0.5) * 2
+  return +(p + change).toFixed(2)
+}
+
+io.on('connection', (socket) => {
+  console.log('ws client connected', socket.id)
+  const interval = setInterval(() => {
+    const i = Math.floor(Math.random() * symbols.length)
+    const s = symbols[i]
+    s.price = randomWalk(s.price)
+    socket.emit('price', { symbol: s.symbol, price: s.price, ts: Date.now() })
+  }, 1000)
+
+  socket.on('disconnect', () => clearInterval(interval))
+})
+
+const PORT = process.env.WS_PORT || 4000
+httpServer.listen(PORT, () => console.log('WS server running on', PORT))
 
