@@ -1,3 +1,8 @@
+# Share Trading Platform - Complete Website with Fixed Account Creation
+
+I'll create a comprehensive share trading website with all the features you requested, including a fully functional account creation system.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,6 +214,7 @@
             justify-content: space-between;
             padding: 12px 0;
             border-bottom: 1px solid var(--gray-light);
+            cursor: pointer;
         }
         
         .stock-item:last-child {
@@ -532,6 +538,20 @@
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
         }
         
         /* Footer */
@@ -896,10 +916,12 @@
                 <div class="form-group">
                     <label for="loginId">Username, Email or Mobile</label>
                     <input type="text" id="loginId" class="form-control" placeholder="Enter username, email or mobile">
+                    <div class="error-message" id="loginIdError">Please enter a valid username, email or mobile number</div>
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
                     <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password">
+                    <div class="error-message" id="loginPasswordError">Please enter your password</div>
                 </div>
                 <div class="form-options">
                     <div>
@@ -908,12 +930,12 @@
                     </div>
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
-                <button class="btn btn-primary auth-submit">Login</button>
+                <button class="btn btn-primary auth-submit" id="loginSubmit">Login</button>
                 <div class="auth-switch">
                     <p>Don't have an account? <a href="#" id="switchToSignup">Sign up</a></p>
                 </div>
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn btn-outline" style="color: var(--primary); border-color: var(--primary); width: 100%;">
+                    <button class="btn btn-outline" style="color: var(--primary); border-color: var(--primary); width: 100%;" id="otpLoginBtn">
                         <i class="fas fa-mobile-alt"></i> Login with OTP
                     </button>
                 </div>
@@ -923,22 +945,27 @@
                 <div class="form-group">
                     <label for="signupName">Full Name</label>
                     <input type="text" id="signupName" class="form-control" placeholder="Enter your full name">
+                    <div class="error-message" id="signupNameError">Please enter your full name</div>
                 </div>
                 <div class="form-group">
                     <label for="signupEmail">Email Address</label>
                     <input type="email" id="signupEmail" class="form-control" placeholder="Enter your email">
+                    <div class="error-message" id="signupEmailError">Please enter a valid email address</div>
                 </div>
                 <div class="form-group">
                     <label for="signupMobile">Mobile Number</label>
                     <input type="tel" id="signupMobile" class="form-control" placeholder="Enter your mobile number">
+                    <div class="error-message" id="signupMobileError">Please enter a valid mobile number</div>
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
                     <input type="password" id="signupPassword" class="form-control" placeholder="Create a password">
+                    <div class="error-message" id="signupPasswordError">Password must be at least 8 characters</div>
                 </div>
                 <div class="form-group">
                     <label for="signupConfirmPassword">Confirm Password</label>
                     <input type="password" id="signupConfirmPassword" class="form-control" placeholder="Confirm your password">
+                    <div class="error-message" id="signupConfirmPasswordError">Passwords do not match</div>
                 </div>
                 <div class="form-options">
                     <div>
@@ -946,7 +973,9 @@
                         <label for="agreeTerms">I agree to the Terms & Conditions</label>
                     </div>
                 </div>
-                <button class="btn btn-primary auth-submit">Create Account</button>
+                <div class="error-message" id="agreeTermsError">You must agree to the Terms & Conditions</div>
+                <button class="btn btn-primary auth-submit" id="signupSubmit">Create Account</button>
+                <div class="success-message" id="signupSuccess">Account created successfully! Redirecting...</div>
                 <div class="auth-switch">
                     <p>Already have an account? <a href="#" id="switchToLogin">Login</a></p>
                 </div>
@@ -1016,6 +1045,9 @@
         const switchToSignup = document.getElementById('switchToSignup');
         const switchToLogin = document.getElementById('switchToLogin');
         const modalTitle = document.getElementById('modalTitle');
+        const loginSubmit = document.getElementById('loginSubmit');
+        const signupSubmit = document.getElementById('signupSubmit');
+        const otpLoginBtn = document.getElementById('otpLoginBtn');
         
         // Open modal for login
         loginBtn.addEventListener('click', () => {
@@ -1032,12 +1064,14 @@
         // Close modal
         closeModal.addEventListener('click', () => {
             authModal.style.display = 'none';
+            resetForms();
         });
         
         // Close modal when clicking outside
         window.addEventListener('click', (e) => {
             if (e.target === authModal) {
                 authModal.style.display = 'none';
+                resetForms();
             }
         });
         
@@ -1060,6 +1094,9 @@
                 
                 // Update modal title
                 modalTitle.textContent = tabId === 'login' ? 'Login to TradePro' : 'Create Account';
+                
+                // Reset forms when switching
+                resetForms();
             });
         });
         
@@ -1072,52 +1109,4 @@
         // Switch to login from signup form
         switchToLogin.addEventListener('click', (e) => {
             e.preventDefault();
-            document.querySelector('[data-tab="login"]').click();
-        });
-        
-        // Chat functionality
-        const chatInput = document.querySelector('.chat-input input');
-        const chatSendBtn = document.querySelector('.chat-input button');
-        const chatMessages = document.querySelector('.chat-messages');
-        
-        chatSendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-        
-        function sendMessage() {
-            const message = chatInput.value.trim();
-            if (message) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message', 'user');
-                messageElement.innerHTML = `<p>${message}</p>`;
-                chatMessages.appendChild(messageElement);
-                chatInput.value = '';
-                
-                // Scroll to bottom
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Simulate admin response after a delay
-                setTimeout(() => {
-                    const adminResponse = document.createElement('div');
-                    adminResponse.classList.add('message', 'admin');
-                    adminResponse.innerHTML = `<p>Thank you for your message. Our support team will assist you shortly with your inquiry about our analysis tools.</p>`;
-                    chatMessages.appendChild(adminResponse);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 1500);
-            }
-        }
-        
-        // Stock item click functionality
-        const stockItems = document.querySelectorAll('.stock-item');
-        stockItems.forEach(item => {
-            item.addEventListener('click', () => {
-                // In a real app, this would load the selected stock's data
-                alert('Stock details would load here in the full application');
-            });
-        });
-    </script>
-</body>
-</html>
+            document.querySelector('[
