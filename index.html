@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Income and Expenditure</title>
+    <title>ABC Company Budget Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -36,6 +36,13 @@
             font-weight: 700;
             font-size: 28px;
             margin: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .header h1:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
         }
         
         .budget-section {
@@ -52,6 +59,13 @@
             margin-bottom: 20px;
             color: var(--primary-color);
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .section-title:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 5px;
         }
         
         .budget-table {
@@ -192,6 +206,9 @@
             .no-print {
                 display: none !important;
             }
+            @page {
+                size: landscape;
+            }
         }
         
         @media (max-width: 768px) {
@@ -207,11 +224,50 @@
                 font-size: 22px;
             }
         }
+        
+        .editable {
+            border-bottom: 1px dashed #3498db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .editable:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .summary-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .summary-card h5 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .summary-card .amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+        
+        .positive {
+            color: #27ae60 !important;
+        }
+        
+        .negative {
+            color: #e74c3c !important;
+        }
     </style>
 </head>
 <body>
-    <div class="header text-center">
-        <h1>Details of Budget Income and Expenditure of Other Offices for the year 2024-25 and Approved Budget for the year 2025-26</h1>
+    <div class="header text-center print-section">
+        <h1 class="editable" id="mainTitle">Detail of Budget Income and Expenditure for the Year 2024-25 and Approved Budget for Year 2025-26</h1>
     </div>
 
     <div class="container">
@@ -247,7 +303,32 @@
                         <button class="btn btn-warning btn-control" id="languageBtn">
                             <i class="fas fa-language"></i> Switch to Urdu
                         </button>
+                        <button class="btn btn-dark btn-control" id="addHeadBtn">
+                            <i class="fas fa-plus"></i> Add New Head
+                        </button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Summary -->
+        <div class="row print-section">
+            <div class="col-md-4">
+                <div class="summary-card">
+                    <h5>Total Budget</h5>
+                    <div class="amount">₹5,912,774</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="summary-card">
+                    <h5>Total Expenditure</h5>
+                    <div class="amount">₹4,894,474</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="summary-card">
+                    <h5>Remaining Budget</h5>
+                    <div class="amount positive">₹1,018,300</div>
                 </div>
             </div>
         </div>
@@ -256,17 +337,17 @@
         <div class="row print-section">
             <div class="col-md-6">
                 <div class="budget-section">
-                    <h3 class="section-title">Details of Budget Income and Expenditure for the year 2024-25 (sum of periods A to Z)</h3>
+                    <h3 class="section-title editable" id="title2024">Budget Income and Expenditure Details for the Year 2024-25 (Total Periods A to Z)</h3>
                     <table class="budget-table">
                         <thead>
                             <tr>
                                 <th>Sr. No.</th>
-                                <th>Head Name</th>
+                                <th>Name of Head</th>
                                 <th>Total Approved Budget Income</th>
-                                <th>Re-Head Name</th>
+                                <th>Name of Head</th>
                                 <th>Total Approved Budget Expenditure</th>
-                                <th>Total Expenditure for 12 Months (April 2024 to March 2025)</th>
-                                <th>Actions</th>
+                                <th>Total Expenses 12 Months (April 2024 to March 2025)</th>
+                                <th class="no-print">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="budget2024Table">
@@ -281,16 +362,16 @@
             
             <div class="col-md-6">
                 <div class="budget-section">
-                    <h3 class="section-title">Details of Approved Budget Income and Expenditure for the year 2025-26 (sum of periods A to Z)</h3>
+                    <h3 class="section-title editable" id="title2025">Details of Approved Budget Income and Expenditure for the Year 2025-26 (Total Periods A to Z)</h3>
                     <table class="budget-table">
                         <thead>
                             <tr>
                                 <th>Sr. No.</th>
-                                <th>Head Name</th>
+                                <th>Name of Head</th>
                                 <th>Approved Budget Income</th>
-                                <th>Re-Head Name</th>
+                                <th>Name of Head</th>
                                 <th>Approved Budget Expenditure</th>
-                                <th>Actions</th>
+                                <th class="no-print">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="budget2025Table">
@@ -309,36 +390,40 @@
             <h3 class="section-title">Budget Analysis</h3>
             <div id="analysisContent">
                 <div class="analysis-item">
-                    <span>Total Income 2024-25:</span>
-                    <span id="totalIncome2024">₹0</span>
+                    <span>Total Budget Androon:</span>
+                    <span id="totalBudgetAndroon">₹1,391,000</span>
                 </div>
                 <div class="analysis-item">
-                    <span>Total Expenditure 2024-25:</span>
-                    <span id="totalExpenditure2024">₹0</span>
+                    <span>Total Expenditure Androon:</span>
+                    <span id="totalExpenditureAndroon">₹1,010,075</span>
                 </div>
                 <div class="analysis-item">
-                    <span>Balance 2024-25:</span>
-                    <span id="balance2024">₹0</span>
+                    <span>Total Budget Baroon:</span>
+                    <span id="totalBudgetBaroon">₹115,000</span>
                 </div>
                 <div class="analysis-item">
-                    <span>Total Income 2025-26:</span>
-                    <span id="totalIncome2025">₹0</span>
+                    <span>Total Expenditure Baroon:</span>
+                    <span id="totalExpenditureBaroon">₹186,065</span>
                 </div>
                 <div class="analysis-item">
-                    <span>Total Expenditure 2025-26:</span>
-                    <span id="totalExpenditure2025">₹0</span>
+                    <span>Total Budget Amla Androon:</span>
+                    <span id="totalBudgetAmlaAndroon">₹4,406,774</span>
                 </div>
                 <div class="analysis-item">
-                    <span>Balance 2025-26:</span>
-                    <span id="balance2025">₹0</span>
+                    <span>Total Expenditure Amla Androon:</span>
+                    <span id="totalExpenditureAmlaAndroon">₹3,698,334</span>
                 </div>
                 <div class="analysis-item">
-                    <span>Year-over-Year Income Change:</span>
-                    <span id="incomeChange">0%</span>
+                    <span>Total Budget (Androon + Baroon):</span>
+                    <span id="totalBudgetCombined">₹1,506,000</span>
                 </div>
                 <div class="analysis-item">
-                    <span>Year-over-Year Expenditure Change:</span>
-                    <span id="expenditureChange">0%</span>
+                    <span>Total Expenditure (Androon + Baroon):</span>
+                    <span id="totalExpenditureCombined">₹1,196,140</span>
+                </div>
+                <div class="analysis-item">
+                    <span>Remaining Budget (Androon + Baroon):</span>
+                    <span id="remainingBudgetCombined" class="positive">₹309,860</span>
                 </div>
             </div>
         </div>
@@ -386,19 +471,67 @@
         </div>
     </div>
 
+    <!-- Add Head Modal -->
+    <div class="modal fade" id="addHeadModal" tabindex="-1" aria-labelledby="addHeadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addHeadModalLabel">Add New Head</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addHeadForm">
+                        <div class="mb-3">
+                            <label for="newHeadName" class="form-label">Head Name</label>
+                            <input type="text" class="form-control" id="newHeadName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newBudgetIncome" class="form-label">Budget Income</label>
+                            <input type="number" class="form-control" id="newBudgetIncome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newBudgetExpenditure" class="form-label">Budget Expenditure</label>
+                            <input type="number" class="form-control" id="newBudgetExpenditure" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="headType" class="form-label">Head Type</label>
+                            <select class="form-control" id="headType" required>
+                                <option value="androon">Androon</option>
+                                <option value="baroon">Baroon</option>
+                                <option value="amla-androon">Amla Androon</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="headYear" class="form-label">Budget Year</label>
+                            <select class="form-control" id="headYear" required>
+                                <option value="2024">2024-25</option>
+                                <option value="2025">2025-26</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveNewHead">Save Head</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Sample data
         let budgetData2024 = [
-            { id: 1, headName: "Tax Revenue", budgetIncome: 5000000, reHeadName: "Administrative Expenses", budgetExpenditure: 3500000, monthlyExpenditure: 291667 },
-            { id: 2, headName: "Grants", budgetIncome: 2000000, reHeadName: "Infrastructure", budgetExpenditure: 1500000, monthlyExpenditure: 125000 },
-            { id: 3, headName: "Fees & Charges", budgetIncome: 1000000, reHeadName: "Salaries", budgetExpenditure: 4000000, monthlyExpenditure: 333333 }
+            { id: 1, headName: "Budget Sayer Androon", budgetIncome: 1391000, reHeadName: "Budget Expenditure Androon", budgetExpenditure: 1010075, monthlyExpenditure: 84173 },
+            { id: 2, headName: "Budget Sayer Baroon", budgetIncome: 115000, reHeadName: "Budget Expenditure Baroon", budgetExpenditure: 186065, monthlyExpenditure: 15505 },
+            { id: 3, headName: "Budget Amla Androon", budgetIncome: 4406774, reHeadName: "Expenditure Androon", budgetExpenditure: 3698334, monthlyExpenditure: 308194 }
         ];
 
         let budgetData2025 = [
-            { id: 1, headName: "Tax Revenue", budgetIncome: 5500000, reHeadName: "Administrative Expenses", budgetExpenditure: 3800000 },
-            { id: 2, headName: "Grants", budgetIncome: 2200000, reHeadName: "Infrastructure", budgetExpenditure: 1600000 },
-            { id: 3, headName: "Fees & Charges", budgetIncome: 1200000, reHeadName: "Salaries", budgetExpenditure: 4200000 }
+            { id: 1, headName: "Budget Sayer Androon", budgetIncome: 1450000, reHeadName: "Budget Expenditure Androon", budgetExpenditure: 1050000 },
+            { id: 2, headName: "Budget Sayer Baroon", budgetIncome: 120000, reHeadName: "Budget Expenditure Baroon", budgetExpenditure: 190000 },
+            { id: 3, headName: "Budget Amla Androon", budgetIncome: 4500000, reHeadName: "Expenditure Androon", budgetExpenditure: 3750000 }
         ];
 
         let currentLanguage = 'english';
@@ -410,6 +543,7 @@
             renderTables();
             updateAnalysis();
             setupEventListeners();
+            setupEditableText();
         });
 
         // Render tables with data
@@ -460,7 +594,7 @@
                 
                 // Actions
                 const actionsCell = document.createElement('td');
-                actionsCell.className = 'action-buttons';
+                actionsCell.className = 'action-buttons no-print';
                 
                 const editButton = document.createElement('button');
                 editButton.className = 'btn-action btn-edit';
@@ -487,27 +621,33 @@
 
         // Update analysis section
         function updateAnalysis() {
-            const totalIncome2024 = budgetData2024.reduce((sum, item) => sum + item.budgetIncome, 0);
-            const totalExpenditure2024 = budgetData2024.reduce((sum, item) => sum + item.budgetExpenditure, 0);
-            const balance2024 = totalIncome2024 - totalExpenditure2024;
+            const totalBudgetAndroon = 1391000;
+            const totalExpenditureAndroon = 1010075;
+            const totalBudgetBaroon = 115000;
+            const totalExpenditureBaroon = 186065;
+            const totalBudgetAmlaAndroon = 4406774;
+            const totalExpenditureAmlaAndroon = 3698334;
             
-            const totalIncome2025 = budgetData2025.reduce((sum, item) => sum + item.budgetIncome, 0);
-            const totalExpenditure2025 = budgetData2025.reduce((sum, item) => sum + item.budgetExpenditure, 0);
-            const balance2025 = totalIncome2025 - totalExpenditure2025;
+            const totalBudgetCombined = totalBudgetAndroon + totalBudgetBaroon;
+            const totalExpenditureCombined = totalExpenditureAndroon + totalExpenditureBaroon;
+            const remainingBudgetCombined = totalBudgetCombined - totalExpenditureCombined;
             
-            const incomeChange = totalIncome2024 > 0 ? 
-                ((totalIncome2025 - totalIncome2024) / totalIncome2024 * 100).toFixed(2) : 0;
-            const expenditureChange = totalExpenditure2024 > 0 ? 
-                ((totalExpenditure2025 - totalExpenditure2024) / totalExpenditure2024 * 100).toFixed(2) : 0;
+            document.getElementById('totalBudgetAndroon').textContent = formatCurrency(totalBudgetAndroon);
+            document.getElementById('totalExpenditureAndroon').textContent = formatCurrency(totalExpenditureAndroon);
+            document.getElementById('totalBudgetBaroon').textContent = formatCurrency(totalBudgetBaroon);
+            document.getElementById('totalExpenditureBaroon').textContent = formatCurrency(totalExpenditureBaroon);
+            document.getElementById('totalBudgetAmlaAndroon').textContent = formatCurrency(totalBudgetAmlaAndroon);
+            document.getElementById('totalExpenditureAmlaAndroon').textContent = formatCurrency(totalExpenditureAmlaAndroon);
+            document.getElementById('totalBudgetCombined').textContent = formatCurrency(totalBudgetCombined);
+            document.getElementById('totalExpenditureCombined').textContent = formatCurrency(totalExpenditureCombined);
             
-            document.getElementById('totalIncome2024').textContent = formatCurrency(totalIncome2024);
-            document.getElementById('totalExpenditure2024').textContent = formatCurrency(totalExpenditure2024);
-            document.getElementById('balance2024').textContent = formatCurrency(balance2024);
-            document.getElementById('totalIncome2025').textContent = formatCurrency(totalIncome2025);
-            document.getElementById('totalExpenditure2025').textContent = formatCurrency(totalExpenditure2025);
-            document.getElementById('balance2025').textContent = formatCurrency(balance2025);
-            document.getElementById('incomeChange').textContent = `${incomeChange}%`;
-            document.getElementById('expenditureChange').textContent = `${expenditureChange}%`;
+            const remainingElement = document.getElementById('remainingBudgetCombined');
+            remainingElement.textContent = formatCurrency(remainingBudgetCombined);
+            if (remainingBudgetCombined >= 0) {
+                remainingElement.className = 'positive';
+            } else {
+                remainingElement.className = 'negative';
+            }
         }
 
         // Open edit modal
@@ -633,6 +773,86 @@
             document.getElementById('addRow2025').addEventListener('click', function() {
                 addNewRow('budget2025Table', false);
             });
+            
+            // Add head button
+            document.getElementById('addHeadBtn').addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.getElementById('addHeadModal'));
+                modal.show();
+            });
+            
+            // Save new head
+            document.getElementById('saveNewHead').addEventListener('click', function() {
+                const headName = document.getElementById('newHeadName').value;
+                const budgetIncome = parseFloat(document.getElementById('newBudgetIncome').value);
+                const budgetExpenditure = parseFloat(document.getElementById('newBudgetExpenditure').value);
+                const headType = document.getElementById('headType').value;
+                const headYear = document.getElementById('headYear').value;
+                
+                let dataArray;
+                let nextId;
+                
+                if (headYear === '2024') {
+                    dataArray = budgetData2024;
+                    nextId = nextId2024++;
+                } else {
+                    dataArray = budgetData2025;
+                    nextId = nextId2025++;
+                }
+                
+                const newItem = {
+                    id: nextId,
+                    headName: headName,
+                    budgetIncome: budgetIncome,
+                    reHeadName: headType === 'androon' ? 'Budget Expenditure Androon' : 
+                                headType === 'baroon' ? 'Budget Expenditure Baroon' :
+                                headType === 'amla-androon' ? 'Expenditure Androon' : 'Other Expenditure',
+                    budgetExpenditure: budgetExpenditure
+                };
+                
+                if (headYear === '2024') {
+                    newItem.monthlyExpenditure = Math.round(budgetExpenditure / 12);
+                }
+                
+                dataArray.push(newItem);
+                renderTables();
+                updateAnalysis();
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addHeadModal'));
+                modal.hide();
+                
+                // Reset form
+                document.getElementById('addHeadForm').reset();
+            });
+        }
+
+        // Setup editable text
+        function setupEditableText() {
+            const editableElements = document.querySelectorAll('.editable');
+            
+            editableElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    const currentText = this.textContent;
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = currentText;
+                    input.className = 'form-control';
+                    
+                    this.innerHTML = '';
+                    this.appendChild(input);
+                    input.focus();
+                    
+                    input.addEventListener('blur', function() {
+                        const newText = this.value;
+                        this.parentElement.textContent = newText;
+                    });
+                    
+                    input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            this.blur();
+                        }
+                    });
+                });
+            });
         }
 
         // Add new row
@@ -679,10 +899,9 @@
                 currentLanguage = 'urdu';
                 
                 // Update headers and labels (simplified example)
-                document.querySelector('.header h1').textContent = 'دفتروں کے بجٹ آمدنی اور اخراجات کی تفصیلات برائے سال 2024-25 اور منظوری شدہ بجٹ برائے سال 2025-26';
-                document.querySelectorAll('.section-title')[0].textContent = 'بجٹ آمدنی اور اخراجات کی تفصیلات برائے سال 2024-25 (مدت A سے Z تک کا مجموعہ)';
-                document.querySelectorAll('.section-title')[1].textContent = 'منظوری شدہ بجٹ آمدنی اور اخراجات کی تفصیلات برائے سال 2025-26 (مدت A سے Z تک کا مجموعہ)';
-                document.querySelectorAll('.section-title')[2].textContent = 'بجٹ کا تجزیہ';
+                document.getElementById('mainTitle').textContent = 'بجٹ آمدنی اور اخراجات کی تفصیلات برائے سال 2024-25 اور منظوری شدہ بجٹ برائے سال 2025-26';
+                document.getElementById('title2024').textContent = 'بجٹ آمدنی اور اخراجات کی تفصیلات برائے سال 2024-25 (مدت A سے Z تک کا مجموعہ)';
+                document.getElementById('title2025').textContent = 'منظوری شدہ بجٹ آمدنی اور اخراجات کی تفصیلات برائے سال 2025-26 (مدت A سے Z تک کا مجموعہ)';
                 
             } else {
                 // Switch to English
@@ -691,65 +910,13 @@
                 currentLanguage = 'english';
                 
                 // Restore original headers and labels
-                document.querySelector('.header h1').textContent = 'Details of Budget Income and Expenditure of Other Offices for the year 2024-25 and Approved Budget for the year 2025-26';
-                document.querySelectorAll('.section-title')[0].textContent = 'Details of Budget Income and Expenditure for the year 2024-25 (sum of periods A to Z)';
-                document.querySelectorAll('.section-title')[1].textContent = 'Details of Approved Budget Income and Expenditure for the year 2025-26 (sum of periods A to Z)';
-                document.querySelectorAll('.section-title')[2].textContent = 'Budget Analysis';
+                document.getElementById('mainTitle').textContent = 'Detail of Budget Income and Expenditure for the Year 2024-25 and Approved Budget for Year 2025-26';
+                document.getElementById('title2024').textContent = 'Budget Income and Expenditure Details for the Year 2024-25 (Total Periods A to Z)';
+                document.getElementById('title2025').textContent = 'Details of Approved Budget Income and Expenditure for the Year 2025-26 (Total Periods A to Z)';
             }
         }
 
         // Create PDF
         function createPDF() {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'landscape',
-                unit: 'mm',
-                format: 'a4'
-            });
-            
-            // Add title
-            doc.setFontSize(16);
-            doc.text('Budget Income and Expenditure Report', 105, 15, { align: 'center' });
-            
-            // Add content (simplified for this example)
-            let yPosition = 30;
-            
-            // 2024-25 table header
-            doc.setFontSize(12);
-            doc.text('2024-25 Budget', 20, yPosition);
-            yPosition += 10;
-            
-            // Add table data (simplified)
-            budgetData2024.forEach(item => {
-                doc.text(`${item.headName}: ${formatCurrency(item.budgetIncome)} / ${formatCurrency(item.budgetExpenditure)}`, 20, yPosition);
-                yPosition += 7;
-                
-                if (yPosition > 270) {
-                    doc.addPage();
-                    yPosition = 20;
-                }
-            });
-            
-            yPosition += 10;
-            
-            // 2025-26 table header
-            doc.text('2025-26 Budget', 20, yPosition);
-            yPosition += 10;
-            
-            // Add table data (simplified)
-            budgetData2025.forEach(item => {
-                doc.text(`${item.headName}: ${formatCurrency(item.budgetIncome)} / ${formatCurrency(item.budgetExpenditure)}`, 20, yPosition);
-                yPosition += 7;
-                
-                if (yPosition > 270) {
-                    doc.addPage();
-                    yPosition = 20;
-                }
-            });
-            
-            // Save the PDF
-            doc.save('budget-report.pdf');
-        }
-    </script>
-</body>
-</html>
+            const
