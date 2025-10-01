@@ -3,377 +3,590 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nazart Ulia Budget Management</title>
+    <title>Nazart Ulia - Budget Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
         body {
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
             color: #333;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-        }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 15px;
-        }
-        .budget-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        .header {
+            background: linear-gradient(135deg, #1a3a8f, #2c5aa0);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .budget-card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid #3498db;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
         }
-        .budget-card h3 {
-            margin-top: 0;
-            color: #2c3e50;
-        }
-        .budget-amount {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        .budget-expenditure {
-            color: #e74c3c;
-        }
-        .budget-remaining {
-            color: #27ae60;
+        .budget-card:hover {
+            transform: translateY(-5px);
         }
         .budget-total {
-            background-color: #2c3e50;
-            color: white;
-            border-left-color: #3498db;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
-        .budget-total h3 {
-            color: white;
-        }
-        .budget-details {
-            margin: 30px 0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .table-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
             margin-bottom: 20px;
         }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        .print-btn {
-            background-color: #3498db;
-            color: white;
-        }
-        .edit-btn {
-            background-color: #f39c12;
-            color: white;
-        }
-        .save-btn {
-            background-color: #27ae60;
-            color: white;
-        }
-        .cancel-btn {
-            background-color: #95a5a6;
-            color: white;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-        .edit-form {
+        .print-title {
             display: none;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
         }
         @media print {
-            body * {
-                visibility: hidden;
+            .no-print {
+                display: none !important;
             }
-            .container, .container * {
-                visibility: visible;
+            .print-title {
+                display: block;
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 20px;
             }
-            .container {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
+            body {
+                background-color: white;
+                font-size: 12px;
+            }
+            .table-container {
                 box-shadow: none;
+                padding: 0;
             }
-            .controls {
-                display: none;
+            .budget-card {
+                box-shadow: none;
+                margin-bottom: 10px;
             }
         }
-        @media (max-width: 768px) {
-            .budget-summary {
-                grid-template-columns: 1fr;
-            }
-            .controls {
-                flex-direction: column;
-            }
-            button {
-                width: 100%;
-            }
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .btn-language {
+            background-color: #1a3a8f;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
+    <!-- Language Selector -->
+    <div class="language-selector no-print">
+        <button class="btn btn-language" id="languageToggle">EN</button>
+    </div>
+
+    <!-- Header Section -->
+    <div class="header text-center">
+        <h1>Nazart Ulia Budget Management System</h1>
+        <p class="lead">Budget Planning and Tracking for Fiscal Year 2024-25</p>
+    </div>
+
     <div class="container">
-        <h1>Nazart Ulia Budget Management</h1>
-        
-        <div class="budget-summary">
-            <div class="budget-card">
-                <h3>Total Budget</h3>
-                <div class="budget-amount">₹5,912,774</div>
-                <p>Allocated for all departments</p>
-            </div>
-            <div class="budget-card">
-                <h3>Total Expenditure</h3>
-                <div class="budget-amount budget-expenditure">₹4,894,474</div>
-                <p>Spent across all departments</p>
-            </div>
-            <div class="budget-card">
-                <h3>Remaining Budget</h3>
-                <div class="budget-amount budget-remaining">₹1,018,300</div>
-                <p>Available for future use</p>
+        <!-- Editable Title -->
+        <div class="row mb-4 no-print">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="pageTitle">Page Title:</label>
+                    <input type="text" class="form-control" id="pageTitle" 
+                           value="Detail of Budget Amad and Expenditure Sayer Year 2024-25 and Approved Budget for Year 2025-26">
+                </div>
             </div>
         </div>
-        
-        <div class="budget-details">
-            <h2>Budget Details by Head</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Budget Head</th>
-                        <th>Budget Amount</th>
-                        <th>Expenditure</th>
-                        <th>Remaining</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Internal Budget</td>
-                        <td>₹1,391,000</td>
-                        <td>₹1,010,075</td>
-                        <td>₹380,925</td>
-                    </tr>
-                    <tr>
-                        <td>External Budget</td>
-                        <td>₹115,000</td>
-                        <td>₹186,065</td>
-                        <td>-₹71,065</td>
-                    </tr>
-                    <tr>
-                        <td>Internal Staff Budget</td>
-                        <td>₹4,406,774</td>
-                        <td>₹3,698,334</td>
-                        <td>₹708,440</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="edit-form" id="editForm">
-            <h2>Edit Budget Heads</h2>
-            <div class="form-group">
-                <label for="totalBudget">Total Budget</label>
-                <input type="number" id="totalBudget" value="5912774">
+
+        <!-- Budget Summary Cards -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card budget-card text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Budget</h5>
+                        <p class="budget-total" id="totalBudget">5,912,774</p>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="totalExpenditure">Total Expenditure</label>
-                <input type="number" id="totalExpenditure" value="4894474">
+            <div class="col-md-4">
+                <div class="card budget-card text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Expenditure</h5>
+                        <p class="budget-total" id="totalExpenditure">4,894,474</p>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="internalBudget">Internal Budget</label>
-                <input type="number" id="internalBudget" value="1391000">
-            </div>
-            <div class="form-group">
-                <label for="internalExpenditure">Internal Expenditure</label>
-                <input type="number" id="internalExpenditure" value="1010075">
-            </div>
-            <div class="form-group">
-                <label for="externalBudget">External Budget</label>
-                <input type="number" id="externalBudget" value="115000">
-            </div>
-            <div class="form-group">
-                <label for="externalExpenditure">External Expenditure</label>
-                <input type="number" id="externalExpenditure" value="186065">
-            </div>
-            <div class="form-group">
-                <label for="internalStaffBudget">Internal Staff Budget</label>
-                <input type="number" id="internalStaffBudget" value="4406774">
-            </div>
-            <div class="form-group">
-                <label for="internalStaffExpenditure">Internal Staff Expenditure</label>
-                <input type="number" id="internalStaffExpenditure" value="3698334">
-            </div>
-            <div class="controls">
-                <button class="save-btn" id="saveBtn">Save Changes</button>
-                <button class="cancel-btn" id="cancelBtn">Cancel</button>
+            <div class="col-md-4">
+                <div class="card budget-card text-white bg-info">
+                    <div class="card-body">
+                        <h5 class="card-title">Budget Remaining</h5>
+                        <p class="budget-total" id="budgetRemaining">1,018,300</p>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="controls">
-            <button class="print-btn" id="printBtn">Print Budget Report</button>
-            <button class="edit-btn" id="editBtn">Edit Budget Details</button>
+
+        <!-- Budget Breakdown -->
+        <div class="table-container">
+            <h3 class="mb-4">Budget Breakdown</h3>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="budgetTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Serial No.</th>
+                            <th>Head Name</th>
+                            <th>Budget Amount</th>
+                            <th>Expenditure Amount</th>
+                            <th class="no-print">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="budgetTableBody">
+                        <!-- Budget items will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-end no-print">
+                <button class="btn btn-success mt-3" id="addHeadBtn">Add New Head</button>
+            </div>
+        </div>
+
+        <!-- Detailed Budget Table -->
+        <div class="table-container">
+            <div class="print-title" id="printTitle"></div>
+            <h3 class="mb-4">Detailed Budget Analysis</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="detailedBudgetTable">
+                    <thead>
+                        <tr>
+                            <th colspan="6" class="text-center table-primary">Budget Income and Expenditure Details for the Year 2024-25 (Total Periods A to Z)</th>
+                            <th colspan="6" class="text-center table-info">Details of Approved Budget Income and Expenditure for the Year 2025-26 (Total Periods A to Z)</th>
+                        </tr>
+                        <tr>
+                            <!-- 2024-25 Columns -->
+                            <th>Serial No.</th>
+                            <th>Name of Head</th>
+                            <th>Total Approved Budget Amad</th>
+                            <th>Name of Head</th>
+                            <th>Total Approved Budget Expenditure</th>
+                            <th>Total Expenses 12 Months (April 2024 to March 2025)</th>
+                            
+                            <!-- 2025-26 Columns -->
+                            <th>Serial No.</th>
+                            <th>Name of Head</th>
+                            <th>Approved Budget Income</th>
+                            <th>Name of Head</th>
+                            <th>Approved Budget Expenditure</th>
+                            <th>Analysis Budget</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailedBudgetTableBody">
+                        <!-- Detailed budget items will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row mb-5 no-print">
+            <div class="col-12 text-center">
+                <button class="btn btn-primary me-2" id="updateBudgetBtn">Update Budget</button>
+                <button class="btn btn-warning me-2" id="printBtn">Print Report</button>
+                <button class="btn btn-info" id="exportPdfBtn">Export as PDF</button>
+            </div>
         </div>
     </div>
 
+    <!-- Add Head Modal -->
+    <div class="modal fade" id="addHeadModal" tabindex="-1" aria-labelledby="addHeadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addHeadModalLabel">Add New Budget Head</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addHeadForm">
+                        <div class="mb-3">
+                            <label for="headName" class="form-label">Head Name</label>
+                            <input type="text" class="form-control" id="headName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="headBudget" class="form-label">Budget Amount</label>
+                            <input type="number" class="form-control" id="headBudget" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="headExpenditure" class="form-label">Expenditure Amount</label>
+                            <input type="number" class="form-control" id="headExpenditure" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveHeadBtn">Save Head</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
-        // DOM elements
-        const printBtn = document.getElementById('printBtn');
-        const editBtn = document.getElementById('editBtn');
-        const editForm = document.getElementById('editForm');
-        const saveBtn = document.getElementById('saveBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        
-        // Budget data
-        let budgetData = {
-            totalBudget: 5912774,
-            totalExpenditure: 4894474,
-            internalBudget: 1391000,
-            internalExpenditure: 1010075,
-            externalBudget: 115000,
-            externalExpenditure: 186065,
-            internalStaffBudget: 4406774,
-            internalStaffExpenditure: 3698334
+        // Initialize budget data
+        let budgetData = [
+            { id: 1, name: "Budget Sayer Androon", budget: 1391000, expenditure: 1010075 },
+            { id: 2, name: "Budget Sayer Baroon", budget: 115000, expenditure: 186065 },
+            { id: 3, name: "Budget Amla Androon", budget: 4406774, expenditure: 3698334 }
+        ];
+
+        // Initialize language (English by default)
+        let currentLanguage = 'en';
+        const languageTexts = {
+            en: {
+                pageTitle: "Detail of Budget Amad and Expenditure Sayer Year 2024-25 and Approved Budget for Year 2025-26",
+                totalBudget: "Total Budget",
+                totalExpenditure: "Total Expenditure",
+                budgetRemaining: "Budget Remaining",
+                budgetBreakdown: "Budget Breakdown",
+                serialNo: "Serial No.",
+                headName: "Head Name",
+                budgetAmount: "Budget Amount",
+                expenditureAmount: "Expenditure Amount",
+                actions: "Actions",
+                addNewHead: "Add New Head",
+                detailedBudgetAnalysis: "Detailed Budget Analysis",
+                budget2024: "Budget Income and Expenditure Details for the Year 2024-25 (Total Periods A to Z)",
+                budget2025: "Details of Approved Budget Income and Expenditure for the Year 2025-26 (Total Periods A to Z)",
+                totalApprovedBudgetAmad: "Total Approved Budget Amad",
+                totalApprovedBudgetExpenditure: "Total Approved Budget Expenditure",
+                totalExpenses12Months: "Total Expenses 12 Months (April 2024 to March 2025)",
+                approvedBudgetIncome: "Approved Budget Income",
+                approvedBudgetExpenditure: "Approved Budget Expenditure",
+                analysisBudget: "Analysis Budget",
+                updateBudget: "Update Budget",
+                printReport: "Print Report",
+                exportPdf: "Export as PDF",
+                addHeadModalTitle: "Add New Budget Head",
+                headNameLabel: "Head Name",
+                budgetAmountLabel: "Budget Amount",
+                expenditureAmountLabel: "Expenditure Amount",
+                cancel: "Cancel",
+                saveHead: "Save Head",
+                edit: "Edit",
+                delete: "Delete"
+            },
+            ur: {
+                pageTitle: "بجٹ آمد اور اخراجات سائر سال 2024-25 کی تفصیل اور سال 2025-26 کے لیے منظور شدہ بجٹ",
+                totalBudget: "کل بجٹ",
+                totalExpenditure: "کل اخراجات",
+                budgetRemaining: "باقی بجٹ",
+                budgetBreakdown: "بجٹ کی تفصیل",
+                serialNo: "سیریل نمبر",
+                headName: "ہیڈ کا نام",
+                budgetAmount: "بجٹ کی رقم",
+                expenditureAmount: "اخراجات کی رقم",
+                actions: "اعمال",
+                addNewHead: "نیا ہیڈ شامل کریں",
+                detailedBudgetAnalysis: "تفصیلی بجٹ کا تجزیہ",
+                budget2024: "سال 2024-25 کے لیے بجٹ آمدنی اور اخراجات کی تفصیل (کل ادوار A سے Z)",
+                budget2025: "سال 2025-26 کے لیے منظور شدہ بجٹ آمدنی اور اخراجات کی تفصیل (کل ادوار A سے Z)",
+                totalApprovedBudgetAmad: "کل منظور شدہ بجٹ آمد",
+                totalApprovedBudgetExpenditure: "کل منظور شدہ بجٹ اخراجات",
+                totalExpenses12Months: "کل اخراجات 12 ماہ (اپریل 2024 سے مارچ 2025)",
+                approvedBudgetIncome: "منظور شدہ بجٹ آمدنی",
+                approvedBudgetExpenditure: "منظور شدہ بجٹ اخراجات",
+                analysisBudget: "بجٹ کا تجزیہ",
+                updateBudget: "بجٹ اپ ڈیٹ کریں",
+                printReport: "رپورٹ پرنٹ کریں",
+                exportPdf: "پی ڈی ایف کے طور پر برآمد کریں",
+                addHeadModalTitle: "نیا بجٹ ہیڈ شامل کریں",
+                headNameLabel: "ہیڈ کا نام",
+                budgetAmountLabel: "بجٹ کی رقم",
+                expenditureAmountLabel: "اخراجات کی رقم",
+                cancel: "منسوخ کریں",
+                saveHead: "ہیڈ محفوظ کریں",
+                edit: "ترمیم",
+                delete: "حذف کریں"
+            },
+            hi: {
+                pageTitle: "बजट आमद और व्यय सेयर वर्ष 2024-25 का विवरण और वर्ष 2025-26 के लिए अनुमोदित बजट",
+                totalBudget: "कुल बजट",
+                totalExpenditure: "कुल व्यय",
+                budgetRemaining: "शेष बजट",
+                budgetBreakdown: "बजट विवरण",
+                serialNo: "क्रम संख्या",
+                headName: "हेड का नाम",
+                budgetAmount: "बजट राशि",
+                expenditureAmount: "व्यय राशि",
+                actions: "कार्य",
+                addNewHead: "नया हेड जोड़ें",
+                detailedBudgetAnalysis: "विस्तृत बजट विश्लेषण",
+                budget2024: "वर्ष 2024-25 के लिए बजट आय और व्यय विवरण (कुल अवधि A से Z)",
+                budget2025: "वर्ष 2025-26 के लिए अनुमोदित बजट आय और व्यय का विवरण (कुल अवधि A से Z)",
+                totalApprovedBudgetAmad: "कुल अनुमोदित बजट आमद",
+                totalApprovedBudgetExpenditure: "कुल अनुमोदित बजट व्यय",
+                totalExpenses12Months: "कुल व्यय 12 महीने (अप्रैल 2024 से मार्च 2025)",
+                approvedBudgetIncome: "अनुमोदित बजट आय",
+                approvedBudgetExpenditure: "अनुमोदित बजट व्यय",
+                analysisBudget: "बजट विश्लेषण",
+                updateBudget: "बजट अपडेट करें",
+                printReport: "रिपोर्ट प्रिंट करें",
+                exportPdf: "PDF के रूप में निर्यात करें",
+                addHeadModalTitle: "नया बजट हेड जोड़ें",
+                headNameLabel: "हेड का नाम",
+                budgetAmountLabel: "बजट राशि",
+                expenditureAmountLabel: "व्यय राशि",
+                cancel: "रद्द करें",
+                saveHead: "हेड सहेजें",
+                edit: "संपादित करें",
+                delete: "हटाएं"
+            }
         };
-        
-        // Format number to Indian currency format
-        function formatCurrency(amount) {
-            return '₹' + amount.toLocaleString('en-IN');
+
+        // DOM elements
+        const pageTitleInput = document.getElementById('pageTitle');
+        const totalBudgetElement = document.getElementById('totalBudget');
+        const totalExpenditureElement = document.getElementById('totalExpenditure');
+        const budgetRemainingElement = document.getElementById('budgetRemaining');
+        const budgetTableBody = document.getElementById('budgetTableBody');
+        const detailedBudgetTableBody = document.getElementById('detailedBudgetTableBody');
+        const addHeadBtn = document.getElementById('addHeadBtn');
+        const addHeadModal = new bootstrap.Modal(document.getElementById('addHeadModal'));
+        const saveHeadBtn = document.getElementById('saveHeadBtn');
+        const updateBudgetBtn = document.getElementById('updateBudgetBtn');
+        const printBtn = document.getElementById('printBtn');
+        const exportPdfBtn = document.getElementById('exportPdfBtn');
+        const languageToggle = document.getElementById('languageToggle');
+        const printTitle = document.getElementById('printTitle');
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            updateBudgetSummary();
+            renderBudgetTable();
+            renderDetailedBudgetTable();
+            setupEventListeners();
+        });
+
+        // Set up event listeners
+        function setupEventListeners() {
+            pageTitleInput.addEventListener('change', updatePrintTitle);
+            addHeadBtn.addEventListener('click', () => addHeadModal.show());
+            saveHeadBtn.addEventListener('click', saveNewHead);
+            updateBudgetBtn.addEventListener('click', updateBudgetSummary);
+            printBtn.addEventListener('click', printReport);
+            exportPdfBtn.addEventListener('click', exportToPdf);
+            languageToggle.addEventListener('click', toggleLanguage);
         }
-        
-        // Calculate remaining budget
-        function calculateRemaining(budget, expenditure) {
-            return budget - expenditure;
+
+        // Update budget summary
+        function updateBudgetSummary() {
+            let totalBudget = 0;
+            let totalExpenditure = 0;
+
+            budgetData.forEach(item => {
+                totalBudget += item.budget;
+                totalExpenditure += item.expenditure;
+            });
+
+            totalBudgetElement.textContent = formatNumber(totalBudget);
+            totalExpenditureElement.textContent = formatNumber(totalExpenditure);
+            budgetRemainingElement.textContent = formatNumber(totalBudget - totalExpenditure);
         }
-        
-        // Update the UI with current budget data
-        function updateUI() {
-            // Update summary cards
-            document.querySelector('.budget-card:nth-child(1) .budget-amount').textContent = 
-                formatCurrency(budgetData.totalBudget);
-            document.querySelector('.budget-card:nth-child(2) .budget-amount').textContent = 
-                formatCurrency(budgetData.totalExpenditure);
-            document.querySelector('.budget-card:nth-child(3) .budget-amount').textContent = 
-                formatCurrency(calculateRemaining(budgetData.totalBudget, budgetData.totalExpenditure));
+
+        // Render budget table
+        function renderBudgetTable() {
+            budgetTableBody.innerHTML = '';
             
-            // Update table
-            const tableRows = document.querySelectorAll('tbody tr');
-            tableRows[0].children[1].textContent = formatCurrency(budgetData.internalBudget);
-            tableRows[0].children[2].textContent = formatCurrency(budgetData.internalExpenditure);
-            tableRows[0].children[3].textContent = formatCurrency(
-                calculateRemaining(budgetData.internalBudget, budgetData.internalExpenditure));
-            
-            tableRows[1].children[1].textContent = formatCurrency(budgetData.externalBudget);
-            tableRows[1].children[2].textContent = formatCurrency(budgetData.externalExpenditure);
-            tableRows[1].children[3].textContent = formatCurrency(
-                calculateRemaining(budgetData.externalBudget, budgetData.externalExpenditure));
-            
-            tableRows[2].children[1].textContent = formatCurrency(budgetData.internalStaffBudget);
-            tableRows[2].children[2].textContent = formatCurrency(budgetData.internalStaffExpenditure);
-            tableRows[2].children[3].textContent = formatCurrency(
-                calculateRemaining(budgetData.internalStaffBudget, budgetData.internalStaffExpenditure));
+            budgetData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${formatNumber(item.budget)}</td>
+                    <td>${formatNumber(item.expenditure)}</td>
+                    <td class="no-print">
+                        <button class="btn btn-sm btn-warning me-1 edit-btn" data-id="${item.id}">${getText('edit')}</button>
+                        <button class="btn btn-sm btn-danger delete-btn" data-id="${item.id}">${getText('delete')}</button>
+                    </td>
+                `;
+                budgetTableBody.appendChild(row);
+            });
+
+            // Add event listeners to edit and delete buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    editHead(id);
+                });
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    deleteHead(id);
+                });
+            });
         }
-        
-        // Event listeners
-        printBtn.addEventListener('click', () => {
+
+        // Render detailed budget table
+        function renderDetailedBudgetTable() {
+            detailedBudgetTableBody.innerHTML = '';
+            
+            budgetData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <!-- 2024-25 Columns -->
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${formatNumber(item.budget)}</td>
+                    <td>${item.name}</td>
+                    <td>${formatNumber(item.expenditure)}</td>
+                    <td>${formatNumber(item.expenditure)}</td>
+                    
+                    <!-- 2025-26 Columns -->
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${formatNumber(item.budget)}</td>
+                    <td>${item.name}</td>
+                    <td>${formatNumber(item.expenditure)}</td>
+                    <td>${formatNumber(item.budget - item.expenditure)}</td>
+                `;
+                detailedBudgetTableBody.appendChild(row);
+            });
+        }
+
+        // Save new head
+        function saveNewHead() {
+            const headName = document.getElementById('headName').value;
+            const headBudget = parseInt(document.getElementById('headBudget').value);
+            const headExpenditure = parseInt(document.getElementById('headExpenditure').value);
+
+            if (headName && !isNaN(headBudget) && !isNaN(headExpenditure)) {
+                const newId = budgetData.length > 0 ? Math.max(...budgetData.map(item => item.id)) + 1 : 1;
+                budgetData.push({
+                    id: newId,
+                    name: headName,
+                    budget: headBudget,
+                    expenditure: headExpenditure
+                });
+
+                updateBudgetSummary();
+                renderBudgetTable();
+                renderDetailedBudgetTable();
+                addHeadModal.hide();
+                
+                // Reset form
+                document.getElementById('addHeadForm').reset();
+            } else {
+                alert('Please fill all fields with valid values');
+            }
+        }
+
+        // Edit head
+        function editHead(id) {
+            const head = budgetData.find(item => item.id === id);
+            if (head) {
+                const newName = prompt('Enter new name for the head:', head.name);
+                if (newName !== null) {
+                    const newBudget = parseInt(prompt('Enter new budget amount:', head.budget));
+                    if (!isNaN(newBudget)) {
+                        const newExpenditure = parseInt(prompt('Enter new expenditure amount:', head.expenditure));
+                        if (!isNaN(newExpenditure)) {
+                            head.name = newName;
+                            head.budget = newBudget;
+                            head.expenditure = newExpenditure;
+                            
+                            updateBudgetSummary();
+                            renderBudgetTable();
+                            renderDetailedBudgetTable();
+                        }
+                    }
+                }
+            }
+        }
+
+        // Delete head
+        function deleteHead(id) {
+            if (confirm('Are you sure you want to delete this head?')) {
+                budgetData = budgetData.filter(item => item.id !== id);
+                updateBudgetSummary();
+                renderBudgetTable();
+                renderDetailedBudgetTable();
+            }
+        }
+
+        // Print report
+        function printReport() {
+            updatePrintTitle();
             window.print();
-        });
-        
-        editBtn.addEventListener('click', () => {
-            editForm.style.display = 'block';
-            // Populate form with current values
-            document.getElementById('totalBudget').value = budgetData.totalBudget;
-            document.getElementById('totalExpenditure').value = budgetData.totalExpenditure;
-            document.getElementById('internalBudget').value = budgetData.internalBudget;
-            document.getElementById('internalExpenditure').value = budgetData.internalExpenditure;
-            document.getElementById('externalBudget').value = budgetData.externalBudget;
-            document.getElementById('externalExpenditure').value = budgetData.externalExpenditure;
-            document.getElementById('internalStaffBudget').value = budgetData.internalStaffBudget;
-            document.getElementById('internalStaffExpenditure').value = budgetData.internalStaffExpenditure;
-        });
-        
-        saveBtn.addEventListener('click', () => {
-            // Update budget data from form
-            budgetData.totalBudget = parseInt(document.getElementById('totalBudget').value);
-            budgetData.totalExpenditure = parseInt(document.getElementById('totalExpenditure').value);
-            budgetData.internalBudget = parseInt(document.getElementById('internalBudget').value);
-            budgetData.internalExpenditure = parseInt(document.getElementById('internalExpenditure').value);
-            budgetData.externalBudget = parseInt(document.getElementById('externalBudget').value);
-            budgetData.externalExpenditure = parseInt(document.getElementById('externalExpenditure').value);
-            budgetData.internalStaffBudget = parseInt(document.getElementById('internalStaffBudget').value);
-            budgetData.internalStaffExpenditure = parseInt(document.getElementById('internalStaffExpenditure').value);
+        }
+
+        // Export to PDF
+        function exportToPdf() {
+            alert('PDF export functionality would be implemented here with a library like jsPDF');
+            // In a real implementation, you would use jsPDF to generate a PDF
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            if (currentLanguage === 'en') {
+                currentLanguage = 'ur';
+                languageToggle.textContent = 'UR';
+            } else if (currentLanguage === 'ur') {
+                currentLanguage = 'hi';
+                languageToggle.textContent = 'HI';
+            } else {
+                currentLanguage = 'en';
+                languageToggle.textContent = 'EN';
+            }
             
-            // Update UI
-            updateUI();
+            updateLanguage();
+        }
+
+        // Update language
+        function updateLanguage() {
+            const texts = languageTexts[currentLanguage];
             
-            // Hide form
-            editForm.style.display = 'none';
-        });
-        
-        cancelBtn.addEventListener('click', () => {
-            editForm.style.display = 'none';
-        });
-        
-        // Initialize UI
-        updateUI();
+            // Update page title
+            pageTitleInput.value = texts.pageTitle;
+            updatePrintTitle();
+            
+            // Update table headers and labels
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (texts[key]) {
+                    element.textContent = texts[key];
+                }
+            });
+            
+            // Re-render tables with new language
+            renderBudgetTable();
+        }
+
+        // Get text for current language
+        function getText(key) {
+            return languageTexts[currentLanguage][key] || key;
+        }
+
+        // Update print title
+        function updatePrintTitle() {
+            printTitle.textContent = pageTitleInput.value;
+        }
+
+        // Format number with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
     </script>
 </body>
 </html>
