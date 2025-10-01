@@ -12,10 +12,13 @@
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
             --accent-color: #e74c3c;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-size: 14px;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-family);
+            font-size: var(--font-size);
             background-color: #f8f9fa;
             color: #333;
         }
@@ -51,11 +54,23 @@
             font-weight: bold;
         }
         
-        .language-selector {
+        .language-selector, .font-selector {
             position: fixed;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .language-selector {
             top: 20px;
             right: 20px;
-            z-index: 1000;
+        }
+        
+        .font-selector {
+            top: 20px;
+            right: 200px;
         }
         
         .table-container {
@@ -131,17 +146,14 @@
             
             @page {
                 size: landscape;
+                margin: 0.5cm;
             }
         }
         
         .urdu-text {
             direction: rtl;
             text-align: right;
-            font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
-        }
-        
-        .hindi-text {
-            font-family: 'Mangal', 'Arial', sans-serif;
+            font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', 'Segoe UI', Tahoma, sans-serif;
         }
         
         .editable-title {
@@ -154,6 +166,30 @@
             outline: none;
             border-color: var(--secondary-color);
         }
+        
+        .font-small {
+            font-size: 12px;
+        }
+        
+        .font-medium {
+            font-size: 14px;
+        }
+        
+        .font-large {
+            font-size: 16px;
+        }
+        
+        .font-arial {
+            font-family: Arial, sans-serif;
+        }
+        
+        .font-times {
+            font-family: 'Times New Roman', serif;
+        }
+        
+        .font-segoe {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -163,6 +199,26 @@
             <option value="en">English</option>
             <option value="ur">اردو (Urdu)</option>
         </select>
+    </div>
+
+    <!-- Font Selector -->
+    <div class="font-selector no-print">
+        <div class="row g-2">
+            <div class="col-6">
+                <select id="fontFamilySelect" class="form-select form-select-sm">
+                    <option value="font-segoe">Segoe UI</option>
+                    <option value="font-arial">Arial</option>
+                    <option value="font-times">Times New Roman</option>
+                </select>
+            </div>
+            <div class="col-6">
+                <select id="fontSizeSelect" class="form-select form-select-sm">
+                    <option value="font-small">Small</option>
+                    <option value="font-medium" selected>Medium</option>
+                    <option value="font-large">Large</option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <!-- Header -->
@@ -216,58 +272,43 @@
             </div>
         </div>
 
-        <!-- Budget Breakdown Tables -->
-        <div class="row">
-            <!-- 2024-25 Table -->
-            <div class="col-md-6">
-                <div class="table-container">
-                    <div class="table-header">
-                        <div contenteditable="true" class="editable-title">Budget income and expenditure details for the year 2024-25 (total periods A to Z)</div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="budgetTable2024">
-                            <thead>
-                                <tr>
-                                    <th id="serialCol2024">S.No</th>
-                                    <th id="headNameCol2024_1">Name of Head</th>
-                                    <th id="approvedBudgetCol2024">Total Approved Budget Amad</th>
-                                    <th id="headNameCol2024_2">Name of Head</th>
-                                    <th id="approvedExpenditureCol2024">Total Approved Budget Expenditure</th>
-                                    <th id="expensesCol2024">Total Expenses 12 Months (April 2024 to March 2025)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="budgetTableBody2024">
-                                <!-- Data will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 2025-26 Table -->
-            <div class="col-md-6">
-                <div class="table-container">
-                    <div class="table-header">
-                        <div contenteditable="true" class="editable-title">Details of approved budget income and expenditure for the year 2025-26 (total periods A to Z)</div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="budgetTable2025">
-                            <thead>
-                                <tr>
-                                    <th id="serialCol2025">S.No</th>
-                                    <th id="headNameCol2025_1">Name of Head</th>
-                                    <th id="approvedIncomeCol2025">Approved Budget Income</th>
-                                    <th id="headNameCol2025_2">Name of Head</th>
-                                    <th id="approvedExpenditureCol2025">Approved Budget Expenditure</th>
-                                    <th id="analysisCol2025">Analysis Budget</th>
-                                </tr>
-                            </thead>
-                            <tbody id="budgetTableBody2025">
-                                <!-- Data will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <!-- Combined Budget Table -->
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="combinedBudgetTable">
+                    <thead>
+                        <tr>
+                            <!-- 2024-25 Columns -->
+                            <th colspan="6" class="text-center table-primary">
+                                <div contenteditable="true" class="editable-title">Budget income and expenditure details for the year 2024-25 (total periods A to Z)</div>
+                            </th>
+                            <!-- 2025-26 Columns -->
+                            <th colspan="6" class="text-center table-info">
+                                <div contenteditable="true" class="editable-title">Details of approved budget income and expenditure for the year 2025-26 (total periods A to Z)</div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <!-- 2024-25 Headers -->
+                            <th id="serialCol2024">S.No</th>
+                            <th id="headNameCol2024_1">Name of Head</th>
+                            <th id="approvedBudgetCol2024">Total Approved Budget Amad</th>
+                            <th id="headNameCol2024_2">Name of Head</th>
+                            <th id="approvedExpenditureCol2024">Total Approved Budget Expenditure</th>
+                            <th id="expensesCol2024">Total Expenses 12 Months (April 2024 to March 2025)</th>
+                            
+                            <!-- 2025-26 Headers -->
+                            <th id="serialCol2025">S.No</th>
+                            <th id="headNameCol2025_1">Name of Head</th>
+                            <th id="approvedIncomeCol2025">Approved Budget Income</th>
+                            <th id="headNameCol2025_2">Name of Head</th>
+                            <th id="approvedExpenditureCol2025">Approved Budget Expenditure</th>
+                            <th id="analysisCol2025">Analysis Budget</th>
+                        </tr>
+                    </thead>
+                    <tbody id="combinedBudgetTableBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -472,10 +513,11 @@
         const totalBudgetEl = document.getElementById('totalBudget');
         const totalExpenditureEl = document.getElementById('totalExpenditure');
         const remainingBudgetEl = document.getElementById('remainingBudget');
-        const budgetTableBody2024 = document.getElementById('budgetTableBody2024');
-        const budgetTableBody2025 = document.getElementById('budgetTableBody2025');
+        const combinedBudgetTableBody = document.getElementById('combinedBudgetTableBody');
         const analysisTableBody = document.getElementById('analysisTableBody');
         const languageSelect = document.getElementById('languageSelect');
+        const fontFamilySelect = document.getElementById('fontFamilySelect');
+        const fontSizeSelect = document.getElementById('fontSizeSelect');
         const addHeadBtn = document.getElementById('addHeadBtn');
         const printBtn = document.getElementById('printBtn');
         const exportPdfBtn = document.getElementById('exportPdfBtn');
@@ -515,79 +557,81 @@
 
         // Populate budget tables
         function populateBudgetTables() {
-            budgetTableBody2024.innerHTML = '';
-            budgetTableBody2025.innerHTML = '';
+            combinedBudgetTableBody.innerHTML = '';
             analysisTableBody.innerHTML = '';
             
             // Group heads by year
             const heads2024 = budgetData.heads.filter(head => head.year === "2024");
             const heads2025 = budgetData.heads.filter(head => head.year === "2025");
             
-            // Populate 2024-25 table
-            populateYearTable(heads2024, budgetTableBody2024);
-            
-            // Populate 2025-26 table
-            populateYearTable(heads2025, budgetTableBody2025);
+            // Populate combined table
+            populateCombinedTable(heads2024, heads2025);
             
             // Populate analysis table
             populateAnalysisTable();
         }
 
-        // Populate table for a specific year
-        function populateYearTable(heads, tableBody) {
-            // Group heads by category
-            const androonHeads = heads.filter(head => head.category === 'androon');
-            const baroonHeads = heads.filter(head => head.category === 'baroon');
-            const amlaHeads = heads.filter(head => head.category === 'amla');
-            const otherHeads = heads.filter(head => head.category === 'other');
+        // Populate combined table with data from both years
+        function populateCombinedTable(heads2024, heads2025) {
+            // Get all unique categories across both years
+            const allCategories = [...new Set([
+                ...heads2024.map(head => head.category),
+                ...heads2025.map(head => head.category)
+            ])];
             
-            // Add rows for each category
-            addCategoryRows(androonHeads, 'Androon', tableBody);
-            addCategoryRows(baroonHeads, 'Baroon', tableBody);
-            addCategoryRows(amlaHeads, 'Amla', tableBody);
-            addCategoryRows(otherHeads, 'Other', tableBody);
-        }
-
-        // Add rows for a specific category
-        function addCategoryRows(heads, categoryName, tableBody) {
-            if (heads.length === 0) return;
-            
-            // Add category header row
-            const headerRow = document.createElement('tr');
-            headerRow.className = 'table-primary fw-bold';
-            headerRow.innerHTML = `
-                <td colspan="6" class="text-center">${categoryName}</td>
-            `;
-            tableBody.appendChild(headerRow);
-            
-            // Add rows for each head in the category
-            let serialIncome = 1;
-            let serialExpenditure = 1;
-            
-            heads.forEach((head) => {
-                const row = document.createElement('tr');
+            allCategories.forEach(category => {
+                // Add category header row
+                const headerRow = document.createElement('tr');
+                headerRow.className = 'table-primary fw-bold';
+                headerRow.innerHTML = `
+                    <td colspan="12" class="text-center">${category.charAt(0).toUpperCase() + category.slice(1)}</td>
+                `;
+                combinedBudgetTableBody.appendChild(headerRow);
                 
-                if (head.type === 'income') {
+                // Get heads for this category for both years
+                const categoryHeads2024 = heads2024.filter(head => head.category === category);
+                const categoryHeads2025 = heads2025.filter(head => head.category === category);
+                
+                // Determine the maximum number of rows needed for this category
+                const maxRows = Math.max(
+                    categoryHeads2024.filter(h => h.type === 'income').length,
+                    categoryHeads2024.filter(h => h.type === 'expenditure').length,
+                    categoryHeads2025.filter(h => h.type === 'income').length,
+                    categoryHeads2025.filter(h => h.type === 'expenditure').length
+                );
+                
+                // Create rows
+                for (let i = 0; i < maxRows; i++) {
+                    const row = document.createElement('tr');
+                    
+                    // 2024-25 columns
+                    const income2024 = categoryHeads2024.filter(h => h.type === 'income')[i];
+                    const expenditure2024 = categoryHeads2024.filter(h => h.type === 'expenditure')[i];
+                    
+                    // 2025-26 columns
+                    const income2025 = categoryHeads2025.filter(h => h.type === 'income')[i];
+                    const expenditure2025 = categoryHeads2025.filter(h => h.type === 'expenditure')[i];
+                    
                     row.innerHTML = `
-                        <td>${serialIncome++}</td>
-                        <td>${head.name}</td>
-                        <td>₹${formatNumber(head.amount)}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <!-- 2024-25 Columns -->
+                        <td>${income2024 ? i + 1 : ''}</td>
+                        <td>${income2024 ? income2024.name : ''}</td>
+                        <td>${income2024 ? '₹' + formatNumber(income2024.amount) : ''}</td>
+                        <td>${expenditure2024 ? expenditure2024.name : ''}</td>
+                        <td>${expenditure2024 ? '₹' + formatNumber(expenditure2024.amount) : ''}</td>
+                        <td>${expenditure2024 ? '₹' + formatNumber(expenditure2024.amount) : ''}</td>
+                        
+                        <!-- 2025-26 Columns -->
+                        <td>${income2025 ? i + 1 : ''}</td>
+                        <td>${income2025 ? income2025.name : ''}</td>
+                        <td>${income2025 ? '₹' + formatNumber(income2025.amount) : ''}</td>
+                        <td>${expenditure2025 ? expenditure2025.name : ''}</td>
+                        <td>${expenditure2025 ? '₹' + formatNumber(expenditure2025.amount) : ''}</td>
+                        <td>${expenditure2025 ? '₹' + formatNumber(expenditure2025.amount) : ''}</td>
                     `;
-                } else {
-                    row.innerHTML = `
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>${head.name}</td>
-                        <td>₹${formatNumber(head.amount)}</td>
-                        <td>₹${formatNumber(head.amount)}</td>
-                    `;
+                    
+                    combinedBudgetTableBody.appendChild(row);
                 }
-                
-                tableBody.appendChild(row);
             });
         }
 
@@ -635,6 +679,18 @@
             languageSelect.addEventListener('change', function() {
                 currentLanguage = this.value;
                 updateLanguage();
+            });
+            
+            // Font family change
+            fontFamilySelect.addEventListener('change', function() {
+                document.body.classList.remove('font-arial', 'font-times', 'font-segoe');
+                document.body.classList.add(this.value);
+            });
+            
+            // Font size change
+            fontSizeSelect.addEventListener('change', function() {
+                document.body.classList.remove('font-small', 'font-medium', 'font-large');
+                document.body.classList.add(this.value);
             });
             
             // Add head button
@@ -775,94 +831,4 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <select class="form-select head-year" data-id="${head.id}">
-                            <option value="2024" ${head.year === '2024' ? 'selected' : ''}>2024-25</option>
-                            <option value="2025" ${head.year === '2025' ? 'selected' : ''}>2025-26</option>
-                        </select>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-danger btn-sm delete-head" data-id="${head.id}">Delete</button>
-                    </div>
-                `;
-                container.appendChild(headElement);
-            });
-            
-            // Add event listeners for delete buttons
-            document.querySelectorAll('.delete-head').forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = parseInt(this.getAttribute('data-id'));
-                    deleteHead(id);
-                });
-            });
-            
-            editHeadsModal.show();
-        }
-
-        // Delete head
-        function deleteHead(id) {
-            const head = budgetData.heads.find(h => h.id === id);
-            if (!head) return;
-            
-            // Update totals
-            if (head.type === 'income') {
-                budgetData.totalBudget -= head.amount;
-            } else {
-                budgetData.totalExpenditure -= head.amount;
-            }
-            
-            // Remove from array
-            budgetData.heads = budgetData.heads.filter(h => h.id !== id);
-            
-            // Update UI
-            updateBudgetSummary();
-            populateBudgetTables();
-            showEditHeadsModal(); // Refresh the modal
-        }
-
-        // Save all heads
-        function saveAllHeads() {
-            // Reset totals
-            budgetData.totalBudget = 0;
-            budgetData.totalExpenditure = 0;
-            
-            // Update each head
-            document.querySelectorAll('.head-name').forEach(input => {
-                const id = parseInt(input.getAttribute('data-id'));
-                const head = budgetData.heads.find(h => h.id === id);
-                if (head) {
-                    head.name = input.value;
-                }
-            });
-            
-            document.querySelectorAll('.head-type').forEach(select => {
-                const id = parseInt(select.getAttribute('data-id'));
-                const head = budgetData.heads.find(h => h.id === id);
-                if (head) {
-                    head.type = select.value;
-                }
-            });
-            
-            document.querySelectorAll('.head-amount').forEach(input => {
-                const id = parseInt(input.getAttribute('data-id'));
-                const head = budgetData.heads.find(h => h.id === id);
-                if (head) {
-                    head.amount = parseInt(input.value);
-                    
-                    // Update totals
-                    if (head.type === 'income') {
-                        budgetData.totalBudget += head.amount;
-                    } else {
-                        budgetData.totalExpenditure += head.amount;
-                    }
-                }
-            });
-            
-            document.querySelectorAll('.head-category').forEach(select => {
-                const id = parseInt(select.getAttribute('data-id'));
-                const head = budgetData.heads.find(h => h.id === id);
-                if (head) {
-                    head.category = select.value;
-                }
-            });
-            
-            document.querySelectorAll('.head-year').forEach(select
+                        <select class="form-select head
